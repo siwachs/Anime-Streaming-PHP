@@ -1,2 +1,2 @@
 # Anime-Streaming-PHP
-A PHP website to stream anime or videos.
+A PHP webapp to stream anime or videos.
