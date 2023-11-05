@@ -9,6 +9,44 @@
     $("#preloder").delay(200).fadeOut("slow");
 
     /*------------------
+		Navigation
+	--------------------*/
+    $(".mobile-menu").slicknav({
+      prependTo: "#mobile-menu-wrap",
+      allowParentLinks: true,
+    });
+
+    /*------------------
+		Background Setter
+	--------------------*/
+    $(".set-bg").each(function () {
+      const bg = $(this).data("setbg");
+      $(this).css("background-image", "url(" + bg + ")");
+    });
+
+    /*------------------
+		Hero Slider and Background Set
+	--------------------*/
+    const hero_s = $(".hero__slider");
+    hero_s.owlCarousel({
+      loop: true,
+      margin: 0,
+      items: 1,
+      dots: true,
+      nav: true,
+      navText: [
+        "<span class='arrow_carrot-left'></span>",
+        "<span class='arrow_carrot-right'></span>",
+      ],
+      animateOut: "fadeOut",
+      animateIn: "fadeIn",
+      smartSpeed: 1200,
+      autoHeight: false,
+      autoplay: true,
+      mouseDrag: true,
+    });
+
+    /*------------------
             FIlter
         --------------------*/
     $(".filter__controls li").on("click", function () {
@@ -30,41 +68,6 @@
     $(".search-model").fadeOut(400, function () {
       $("#search-input").val("");
     });
-  });
-
-  /*------------------
-		Navigation
-	--------------------*/
-  $(".mobile-menu").slicknav({
-    prependTo: "#mobile-menu-wrap",
-    allowParentLinks: true,
-  });
-
-  /*------------------
-		Hero Slider and Background Set
-	--------------------*/
-  $(".set-bg").each(function () {
-    const bg = $(this).data("setbg");
-    $(this).css("background-image", "url(" + bg + ")");
-  });
-
-  const hero_s = $(".hero__slider");
-  hero_s.owlCarousel({
-    loop: true,
-    margin: 0,
-    items: 1,
-    dots: true,
-    nav: true,
-    navText: [
-      "<span class='arrow_carrot-left'></span>",
-      "<span class='arrow_carrot-right'></span>",
-    ],
-    animateOut: "fadeOut",
-    animateIn: "fadeIn",
-    smartSpeed: 1200,
-    autoHeight: false,
-    autoplay: true,
-    mouseDrag: true,
   });
 
   /*------------------

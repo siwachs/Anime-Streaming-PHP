@@ -556,7 +556,7 @@ ol {
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
-  /* position: relative; */
+  position: relative;
   z-index: 1;
   position: absolute;
   left: -33px;
@@ -594,13 +594,8 @@ ol {
   Product
 -----------------------*/
 
-.product {
-  padding-bottom: 60px;
-  padding-top: 80px;
-}
-
-.product-page {
-  padding-top: 60px;
+.trending__product {
+  margin-bottom: 50px;
 }
 
 .btn__all {
@@ -608,8 +603,13 @@ ol {
   margin-bottom: 30px;
 }
 
-.trending__product {
-  margin-bottom: 50px;
+.product {
+  padding-bottom: 60px;
+  padding-top: 80px;
+}
+
+.product-page {
+  padding-top: 60px;
 }
 
 .popular__product {
