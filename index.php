@@ -10,6 +10,7 @@ use controllers\CategoriesController;
 use controllers\AuthController;
 
 $request_uri = $_SERVER['REQUEST_URI'];
+session_start();
 Database::getInstance()->getConnection();
 
 switch ($request_uri) {
@@ -22,8 +23,24 @@ switch ($request_uri) {
         $categoriesController->index();
         break;
     case '/auth/signup':
-        $authController = new AuthController();
-        $authController->signUp();
+        $authController = AuthController::getInstance();
+        if (isset($_SESSION['email'])) {
+            $authController->redirectTo('/');
+        } else {
+            $authController->signUp();
+        }
+        break;
+    case '/auth/signin':
+        $authController = AuthController::getInstance();
+        if (isset($_SESSION['email'])) {
+            $authController->redirectTo('/');
+        } else {
+            $authController->signIn();
+        }
+        break;
+    case '/auth/signout':
+        $authController = AuthController::getInstance();
+        $authController->signOut();
         break;
     default:
         echo 'Page not found.';

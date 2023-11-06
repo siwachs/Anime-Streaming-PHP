@@ -50,6 +50,36 @@ class AuthModel
 
     public function createUser()
     {
-        
+        $insert = $this->connection->prepare('INSERT INTO users (username, email, password) VALUES (:username, :email, :password)');
+
+        try {
+            $insert->execute([
+                ':username' => $this->username,
+                ':email' => $this->email,
+                ':password' => $this->password
+            ]);
+        } catch (\PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+    public function getUser($email, $password)
+    {
+        $select = $this->connection->prepare('SELECT * from users where email=:email');
+
+        try {
+            $select->execute([
+                ':email' => $email
+            ]);
+            $user = $select->fetch(\PDO::FETCH_ASSOC);
+            if ($user && password_verify($password, $user['password'])) {
+                return $user;
+            } else {
+                return null;
+            }
+        } catch (\PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
     }
 }
