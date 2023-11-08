@@ -25,7 +25,7 @@
                         <li>Active</li>
                         <li>Movie</li>
                     </ul>
-                    <h5><a href="anime-details.html">The Seven Deadly Sins: Wrath of the Gods</a></h5>
+                    <h5><a href="/anime-details">The Seven Deadly Sins: Wrath of the Gods</a></h5>
                 </div>
             </div>
         </div>

@@ -4,10 +4,12 @@ require_once './Database.php';
 require_once './controllers/HomeController.php';
 require_once './controllers/CategoriesController.php';
 require_once './controllers/AuthController.php';
+require_once './controllers/AnimeDetailsController.php';
 
 use controllers\HomeController;
 use controllers\CategoriesController;
 use controllers\AuthController;
+use controllers\AnimeDetailsController;
 
 $request_uri = $_SERVER['REQUEST_URI'];
 session_start();
@@ -41,6 +43,10 @@ switch ($request_uri) {
     case '/auth/signout':
         $authController = AuthController::getInstance();
         $authController->signOut();
+        break;
+    case '/anime-details':
+        $animeDetailsController = new AnimeDetailsController();
+        $animeDetailsController->index();
         break;
     default:
         echo 'Page not found.';

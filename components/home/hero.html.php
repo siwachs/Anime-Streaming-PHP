@@ -1,32 +1,20 @@
 <section class="hero">
     <div class="container">
         <div class="hero__slider owl-carousel">
-            <div class="hero__items set-bg" data-setbg="assets/img/hero/hero-1.jpg">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="hero__text">
-                            <div class="label">Adventure</div>
-                            <h2>Fate / Stay Night: Unlimited Blade Works</h2>
-                            <p>After 30 days of travel across the world...</p>
-                            <a href="anime-watching.html"><span>Watch Now</span> <i class="fa fa-angle-right"></i></a>
+            <?php foreach ($heroSection as $show) : ?>
+                <div class="hero__items set-bg" data-setbg="<?= $show['image'] ?>">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="hero__text">
+                                <div class="label"><?= $show['genres'] ?></div>
+                                <h2><?= $show['title'] ?></h2>
+                                <p><?= $show['description'] ?></p>
+                                <a href="/anime-details"><span>Watch Now</span> <i class="fa fa-angle-right"></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="hero__items set-bg" data-setbg="assets/img/hero/hero-1.jpg">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="hero__text">
-                            <div class="label">Adventure</div>
-                            <a href="anime-details.html">
-                                <h2>Fate / Stay Night: Unlimited Blade Works</h2>
-                            </a>
-                            <p>After 30 days of travel across the world...</p>
-                            <a href="#"><span>Watch Now</span> <i class="fa fa-angle-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php endforeach ?>
         </div>
     </div>
 </section>
