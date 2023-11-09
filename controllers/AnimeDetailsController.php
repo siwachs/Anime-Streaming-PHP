@@ -6,6 +6,6 @@ class AnimeDetailsController
 {
     public function index()
     {
-        include_once './views/anime-details.view.php';
+        include_once './views/anime_details.view.php';
     }
 }

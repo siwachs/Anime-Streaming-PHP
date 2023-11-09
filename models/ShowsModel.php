@@ -39,7 +39,25 @@ class ShowsModel
 
     public function getTrendingShows($limit = null)
     {
-        $queryString = 'SELECT shows.id AS id, shows.image AS image, shows.title as title, shows.num_of_episodes_avail AS numOfEpisodesAvail, shows.total_episodes AS totalEpisodes, shows.genres AS genres, COUNT(views.show_id) AS numOfViews FROM shows JOIN views ON shows.id = views.show_id GROUP BY(shows.id)';
+        $queryString = 'SELECT shows.id AS id, shows.poster_image AS poster, shows.title as title, shows.num_of_episodes_avail AS numOfEpisodesAvail, shows.total_episodes AS totalEpisodes, shows.genres AS genres, COUNT(views.show_id) AS numOfViews FROM shows JOIN views ON shows.id = views.show_id GROUP BY(shows.id) ORDER BY numOfViews DESC';
+        return $this->getShows($queryString, $limit);
+    }
+
+    public function getShowsByGenre($genre, $limit = null)
+    {
+        $queryString = "SELECT shows.id AS id, shows.poster_image AS poster, shows.title as title, shows.num_of_episodes_avail AS numOfEpisodesAvail, shows.total_episodes AS totalEpisodes, shows.genres AS genres, COUNT(views.show_id) AS numOfViews FROM shows LEFT JOIN views ON shows.id = views.show_id WHERE LOWER(shows.genres) LIKE '%" . strtolower($genre) . "%' GROUP BY(shows.id) ORDER BY shows.id DESC";
+        return $this->getShows($queryString, $limit);
+    }
+
+    public function getRecentlyAddedShows($limit = null)
+    {
+        $queryString = 'SELECT shows.id AS id, shows.poster_image AS poster, shows.title as title, shows.num_of_episodes_avail AS numOfEpisodesAvail, shows.total_episodes AS totalEpisodes, shows.genres AS genres, COUNT(views.show_id) AS numOfViews FROM shows LEFT JOIN views ON shows.id = views.show_id GROUP BY(shows.id) ORDER BY shows.created_at DESC';
+        return $this->getShows($queryString, $limit);
+    }
+
+    public function getForYouShows($genre, $limit = null)
+    {
+        $queryString = "SELECT shows.id AS id, shows.poster_image AS poster, shows.title as title, shows.genres AS genres, COUNT(views.show_id) AS numOfViews FROM shows LEFT JOIN views ON shows.id = views.show_id WHERE LOWER(shows.genres) LIKE '%" . strtolower($genre) . "%' GROUP BY(shows.id) ORDER BY shows.id DESC";
         return $this->getShows($queryString, $limit);
     }
 }

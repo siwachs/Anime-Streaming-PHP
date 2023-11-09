@@ -2,7 +2,7 @@
     <div class="container">
         <div class="hero__slider owl-carousel">
             <?php foreach ($heroSection as $show) : ?>
-                <div class="hero__items set-bg" data-setbg="<?= $show['image'] ?>">
+                <div class="hero__items set-bg" data-setbg="<?= $show['thumbnail_image'] ?>">
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="hero__text">
