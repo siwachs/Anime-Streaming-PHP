@@ -27,7 +27,7 @@ class HomeController
         $trendingShows = $this->homeModel->getTrendingShows();
         $adventureShows = $this->homeModel->getShowsByGenre('Adventure');
         $recentlyAddedShows = $this->homeModel->getRecentlyAddedShows();
-        $liveActionShows = $this->homeModel->getShowsByGenre('Live Action');
+        $liveActionShows = $this->homeModel->getShowsByGenre('Live');
         $forYouSection = $this->homeModel->getForYouShows('Adventure');
 
         include_once './views/home.view.php';
