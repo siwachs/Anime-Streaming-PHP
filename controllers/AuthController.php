@@ -70,6 +70,7 @@ class AuthController
                 if (!$user) {
                     echo '<script>alert("Email or Password may be incorrect.")</script>';
                 } else {
+                    $_SESSION['id'] = $user['id'];
                     $_SESSION['username'] = $user['username'];
                     $_SESSION['email'] = $user['email'];
                     $this->redirectTo('/');

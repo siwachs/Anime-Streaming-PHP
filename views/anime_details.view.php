@@ -93,9 +93,17 @@ require_once './components/head.html.php';
                             </div>
 
                             <div class="anime__details__btn">
-                                <a href="#" class="follow-btn"><i class="fa fa-heart-o"></i> Follow</a>
-                                <a href="anime-watching.html" class="watch-btn"><span>Watch Now</span> <i
-                                        class="fa fa-angle-right"></i></a>
+                                <form action="/anime-details?id=<?= $show[0]['id'] ?>" method="post">
+                                    <input type="text" value="<?= $show[0]['id'] ?>" name="show_id" hidden>
+                                    <input type="text" value="<?= $_SESSION['id'] ?>" name="user_id" hidden>
+                                    <?php if (count($isFollowed) > 0) : ?>
+                                        <button name="submit" class="follow-btn" disabled><i class="fa fa-heart-o"></i>Followed</button>
+                                    <?php else : ?>
+                                        <button name="submit" class="follow-btn"><i class="fa fa-heart-o"></i>Follow</button>
+                                    <?php endif; ?>
+                                </form>
+
+                                <a href="anime-watching.html" class="watch-btn"><span>Watch Now</span> <i class="fa fa-angle-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -108,7 +116,7 @@ require_once './components/head.html.php';
                         <div class="section-title">
                             <h5>Reviews</h5>
                         </div>
-                        <?php foreach ($comments as $comment): ?>
+                        <?php foreach ($comments as $comment) : ?>
                             <div class="anime__review__item">
                                 <div class="anime__review__item__pic">
                                     <img src="assets/img/anime/review-1.jpg" alt="" />
@@ -146,7 +154,7 @@ require_once './components/head.html.php';
                             <h5>you might like...</h5>
                         </div>
 
-                        <?php foreach ($youMightLike as $show): ?>
+                        <?php foreach ($youMightLike as $show) : ?>
                             <div class="product__sidebar__view__item set-bg" data-setbg="<?= $show['thumbnail'] ?>">
                                 <div class="ep">
                                     <?= $show['numOfEpisodesAvail'] ?> /

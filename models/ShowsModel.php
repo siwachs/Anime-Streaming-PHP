@@ -8,6 +8,8 @@ require_once './Database.php';
 
 class ShowsModel
 {
+    const ERROR_MESSAGE = 'There is a Error in Query';
+
     private static $instance;
     private $connection;
 
@@ -44,7 +46,7 @@ class ShowsModel
             $select->execute();
             return $select->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\Exception $e) {
-            echo 'There is a Error in Query';
+            echo ShowsModel::ERROR_MESSAGE;
             return null;
         }
     }
@@ -82,5 +84,36 @@ class ShowsModel
         }
 
         return null;
+    }
+
+    public function followShow($show_id, $user_id)
+    {
+        $insert = $this->connection->prepare('INSERT INTO followings (show_id, user_id) VALUES (:show_id, :user_id)');
+
+        try {
+            $insert->execute([
+                ':show_id' => $show_id,
+                ':user_id' => $user_id,
+            ]);
+        } catch (\PDOException $e) {
+            echo ShowsModel::ERROR_MESSAGE;
+        }
+    }
+
+    public function isShowFollowed($show_id, $user_id)
+    {
+        $select = $this->connection->prepare('SELECT * FROM followings WHERE show_id = :show_id AND user_id = :user_id');
+
+        try {
+            $select->execute([
+                ':show_id' => $show_id,
+                ':user_id' => $user_id,
+            ]);
+
+            return $select->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo ShowsModel::ERROR_MESSAGE;
+            return false;
+        }
     }
 }
