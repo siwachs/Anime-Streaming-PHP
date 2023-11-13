@@ -6,7 +6,7 @@
     <div class="section-title">
         <h5>For You</h5>
     </div>
-    <?php foreach ($forYouSection as $show) : ?>
+    <?php foreach ($forYouSection as $show): ?>
         <div class="product__sidebar__comment__item">
             <div class="product__sidebar__comment__item__pic">
                 <img src="img/sidebar/comment-1.jpg" alt="">
@@ -21,8 +21,12 @@
                     }
                     ?>
                 </ul>
-                <h5><a href="#"><?= $show['title'] ?></a></h5>
-                <span><i class="fa fa-eye"></i> <?= $show['numOfViews'] ?> Viewes</span>
+                <h5><a href="/anime-details?id=<?= $show['id'] ?>">
+                        <?= $show['title'] ?>
+                    </a></h5>
+                <span><i class="fa fa-eye"></i>
+                    <?= $show['numOfViews'] ?> Viewes
+                </span>
             </div>
         </div>
     <?php endforeach; ?>

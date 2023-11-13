@@ -21,6 +21,7 @@ require_once './components/head.html.php';
             include_once './components/home/live.html.php';
             ?>
           </div>
+
           <div class="col-sm-8 col-md-6 col-lg-4">
             <?php
             include_once './components/home/sidebar.html.php'; ?>

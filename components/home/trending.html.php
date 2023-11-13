@@ -13,13 +13,18 @@
     </div>
 
     <div class="row">
-        <?php foreach ($trendingShows as $show) : ?>
+        <?php foreach ($trendingShows as $show): ?>
             <div class="col-sm-6 col-md-6 col-lg-4">
                 <div class="product__item">
                     <div class="product__item__pic set-bg" data-setbg="<?= $show['poster'] ?>">
-                        <div class="ep"><?= $show['numOfEpisodesAvail'] ?> / <?= $show['totalEpisodes'] ?></div>
+                        <div class="ep">
+                            <?= $show['numOfEpisodesAvail'] ?> /
+                            <?= $show['totalEpisodes'] ?>
+                        </div>
                         <div class="comment"><i class="fa fa-comments"></i> 0</div>
-                        <div class="view"><i class="fa fa-eye"></i> <?= $show['numOfViews'] ?></div>
+                        <div class="view"><i class="fa fa-eye"></i>
+                            <?= $show['numOfViews'] ?>
+                        </div>
                     </div>
                     <div class="product__item__text">
                         <ul>
@@ -31,7 +36,9 @@
                             }
                             ?>
                         </ul>
-                        <h5><a href="/anime-details"><?= $show['title'] ?></a></h5>
+                        <h5><a href="/anime-details?id=<?= $show['id'] ?>">
+                                <?= $show['title'] ?>
+                            </a></h5>
                     </div>
                 </div>
             </div>

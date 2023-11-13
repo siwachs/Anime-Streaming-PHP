@@ -15,17 +15,21 @@
             <ul>
               <li class="active"><a href="/">Home</a></li>
               <li>
-                <a href="/categories">Categories <span class="arrow_carrot-down"></span></a>
+                <a href="/genres">Genres <span class="arrow_carrot-down"></span></a>
                 <ul class="dropdown">
-                  <?php foreach ($genres as $genre) : ?>
-                    <li><a href="/categories"><?= $genre['name'] ?></a></li>
+                  <?php foreach ($genres as $genreItem) : ?>
+                    <li><a href="/genres?name=<?= $genreItem['name'] ?>">
+                        <?= $genreItem['name'] ?>
+                      </a></li>
                   <?php endforeach; ?>
                 </ul>
               </li>
               <?php if (isset($_SESSION['email'])) : ?>
                 <li>
-                  <a href="#"><?php echo $_SESSION['email']; ?>
-                    <span class="arrow_carrot-down"></span></a>
+                  <a href="#">
+                    <?php echo $_SESSION['email']; ?>
+                    <span class="arrow_carrot-down"></span>
+                  </a>
                   <ul class="dropdown">
                     <li><a href="<?php echo "/auth/signout" ?>">Sign Out</a></li>
                   </ul>

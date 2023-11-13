@@ -10,25 +10,25 @@ use models\GenresModel;
 
 class HomeController
 {
-    private $homeModel;
-    private $genresModel;
+    private $showsModel;
+    private $genres;
 
     public function __construct()
     {
-        $this->homeModel = new ShowsModel();
-        $this->genresModel = new GenresModel();
+        $this->showsModel = ShowsModel::getInstance();
+        $this->genres = GenresModel::getInstance()->getAllGenres();
     }
 
     public function index()
     {
-        $genres = $this->genresModel->getAllGenres();
+        $genres = $this->genres;
 
-        $heroSection = $this->homeModel->getAllShows();
-        $trendingShows = $this->homeModel->getTrendingShows();
-        $adventureShows = $this->homeModel->getShowsByGenre('Adventure');
-        $recentlyAddedShows = $this->homeModel->getRecentlyAddedShows();
-        $liveActionShows = $this->homeModel->getShowsByGenre('Live');
-        $forYouSection = $this->homeModel->getForYouShows('Adventure');
+        $heroSection = $this->showsModel->getAllShows();
+        $trendingShows = $this->showsModel->getTrendingShows();
+        $adventureShows = $this->showsModel->getShowsByGenre('Adventure');
+        $recentlyAddedShows = $this->showsModel->getRecentlyAddedShows();
+        $liveActionShows = $this->showsModel->getShowsByGenre('Live');
+        $forYouSection = $this->showsModel->getShowsByGenre('Adventure');
 
         include_once './views/home.view.php';
     }

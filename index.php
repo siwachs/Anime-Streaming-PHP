@@ -2,12 +2,12 @@
 
 require_once './Database.php';
 require_once './controllers/HomeController.php';
-require_once './controllers/CategoriesController.php';
+require_once './controllers/GenresController.php';
 require_once './controllers/AuthController.php';
 require_once './controllers/AnimeDetailsController.php';
 
 use controllers\HomeController;
-use controllers\CategoriesController;
+use controllers\GenresController;
 use controllers\AuthController;
 use controllers\AnimeDetailsController;
 
@@ -15,14 +15,17 @@ $request_uri = $_SERVER['REQUEST_URI'];
 session_start();
 Database::getInstance()->getConnection();
 
-switch ($request_uri) {
+$parsed_url = parse_url($request_uri);
+$path = $parsed_url['path'];
+
+switch ($path) {
     case '/':
         $homeController = new HomeController();
         $homeController->index();
         break;
-    case '/categories':
-        $categoriesController = new CategoriesController();
-        $categoriesController->index();
+    case '/genres':
+        $genresController = new GenresController(isset($_GET['name']) ? $_GET['name'] : 'All');
+        $genresController->index();
         break;
     case '/auth/signup':
         $authController = AuthController::getInstance();

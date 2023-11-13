@@ -8,7 +8,7 @@ require_once './Database.php';
 
 class ShowsModel
 {
-
+    private static $instance;
     private $connection;
 
     public function __construct()
@@ -16,15 +16,33 @@ class ShowsModel
         $this->connection = Database::getInstance()->getConnection();
     }
 
-    private function getShows($queryString, $limit = null)
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+    private function getShows($queryString, $id = null, $limit = null)
     {
         if (isset($limit)) {
-            $queryString .= ' LIMIT ' . $limit;
+            $queryString .= ' LIMIT :limit';
         }
-        $query = $this->connection->query($queryString);
+
+        $select = $this->connection->prepare($queryString);
+        if (isset($limit)) {
+            $select->bindParam(':limit', $limit, \PDO::PARAM_INT);
+        }
+
+        if (isset($id)) {
+            $select->bindParam(':id', $id, \PDO::PARAM_INT);
+        }
+
         try {
-            $query->execute();
-            return $query->fetchAll(\PDO::FETCH_ASSOC);
+            $select->execute();
+            return $select->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\Exception $e) {
             echo 'There is a Error in Query';
             return null;
@@ -45,7 +63,7 @@ class ShowsModel
 
     public function getShowsByGenre($genre, $limit = null)
     {
-        $queryString = "SELECT shows.id AS id, shows.poster_image AS poster, shows.title as title, shows.num_of_episodes_avail AS numOfEpisodesAvail, shows.total_num_of_episodes AS totalEpisodes, shows.genres AS genres, COUNT(views.show_id) AS numOfViews FROM shows LEFT JOIN views ON shows.id = views.show_id WHERE MATCH(shows.genres) AGAINST ('" . $genre . "' IN BOOLEAN MODE) GROUP BY shows.id ORDER BY shows.id DESC";
+        $queryString = "SELECT shows.id AS id, shows.poster_image AS poster, shows.thumbnail_image AS thumbnail, shows.title as title, shows.num_of_episodes_avail AS numOfEpisodesAvail, shows.total_num_of_episodes AS totalEpisodes, shows.genres AS genres, COUNT(views.show_id) AS numOfViews FROM shows LEFT JOIN views ON shows.id = views.show_id WHERE MATCH(shows.genres) AGAINST ('" . $genre . "' IN BOOLEAN MODE) GROUP BY shows.id ORDER BY shows.id DESC";
         return $this->getShows($queryString, $limit);
     }
 
@@ -55,9 +73,14 @@ class ShowsModel
         return $this->getShows($queryString, $limit);
     }
 
-    public function getForYouShows($genre, $limit = null)
+    public function getShowById($id)
     {
-        $queryString = "SELECT shows.id AS id, shows.poster_image AS poster, shows.title as title, shows.genres AS genres, COUNT(views.show_id) AS numOfViews FROM shows LEFT JOIN views ON shows.id = views.show_id WHERE LOWER(shows.genres) LIKE '%" . strtolower($genre) . "%' GROUP BY(shows.id) ORDER BY shows.id DESC";
-        return $this->getShows($queryString, $limit);
+        $queryString = 'SELECT shows.id AS id, shows.poster_image AS poster, shows.title AS title, shows.description AS description, shows.genres AS genres, shows.type AS type, shows.studios AS studios, shows.date_aired  AS dateAired, shows.status AS status, shows.duration as duration, shows.quality AS quality, COUNT(views.show_id) AS numOfViews FROM shows LEFT JOIN views ON shows.id = views.show_id WHERE shows.id = :id GROUP BY shows.id';
+        $show = $this->getShows($queryString, $id);
+        if ($show) {
+            return $show;
+        }
+
+        return null;
     }
 }

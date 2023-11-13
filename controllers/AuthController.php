@@ -3,17 +3,21 @@
 namespace controllers;
 
 require_once './models/AuthModel.php';
+require_once './models/GenresModel.php';
 
 use models\AuthModel;
+use models\GenresModel;
 
 class AuthController
 {
     private static $instance;
     private $authModel;
+    private $genres;
 
     public function __construct()
     {
         $this->authModel = new AuthModel();
+        $this->genres = GenresModel::getInstance()->getAllGenres();
     }
 
     public static function getInstance()
@@ -47,6 +51,8 @@ class AuthController
             }
         }
 
+        $genres = $this->genres;
+
         include_once './views/auth/signup.html.php';
     }
 
@@ -70,6 +76,8 @@ class AuthController
                 }
             }
         }
+
+        $genres = $this->genres;
 
         include_once './views/auth/signin.html.php';
     }

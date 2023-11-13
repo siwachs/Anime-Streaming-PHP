@@ -6,7 +6,7 @@ use Database;
 
 require_once './Database.php';
 
-class GenresModel
+class CommentsModel
 {
     private static $instance;
     private $connection;
@@ -25,14 +25,19 @@ class GenresModel
         return self::$instance;
     }
 
-    private function getGenres($queryString, $limit = null)
+    private function getComments($queryString, $showId = null, $limit = null)
     {
         if (isset($limit)) {
             $queryString .= ' LIMIT :limit';
         }
+
         $select = $this->connection->prepare($queryString);
         if (isset($limit)) {
             $select->bindParam(':limit', $limit, \PDO::PARAM_INT);
+        }
+
+        if (isset($showId)) {
+            $select->bindParam(':showId', $showId, \PDO::PARAM_INT);
         }
 
         try {
@@ -44,9 +49,9 @@ class GenresModel
         }
     }
 
-    public function getAllGenres($limit = null)
+    public function getCommentsByShowId($showId)
     {
-        $queryString = 'SELECT * FROM genres';
-        return $this->getGenres($queryString, $limit);
+        $queryString = 'SELECT * FROM comments WHERE show_id = :showId';
+        return $this->getComments($queryString, $showId);
     }
 }
