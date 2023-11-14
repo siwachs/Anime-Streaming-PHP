@@ -5,11 +5,13 @@ require_once './controllers/HomeController.php';
 require_once './controllers/GenresController.php';
 require_once './controllers/AuthController.php';
 require_once './controllers/AnimeDetailsController.php';
+require_once './controllers/AnimeWatchingController.php';
 
 use controllers\HomeController;
 use controllers\GenresController;
 use controllers\AuthController;
 use controllers\AnimeDetailsController;
+use controllers\AnimeWatchingController;
 
 $request_uri = $_SERVER['REQUEST_URI'];
 session_start();
@@ -50,6 +52,10 @@ switch ($path) {
     case '/anime-details':
         $animeDetailsController = new AnimeDetailsController();
         $animeDetailsController->index();
+        break;
+    case '/anime-watching':
+        $animeWatchingController = new AnimeWatchingController();
+        $animeWatchingController->index();
         break;
     default:
         echo 'Page not found.';

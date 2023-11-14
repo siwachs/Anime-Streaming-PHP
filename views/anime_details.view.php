@@ -101,9 +101,9 @@ require_once './components/head.html.php';
                                     <?php else : ?>
                                         <button name="submit" class="follow-btn"><i class="fa fa-heart-o"></i>Follow</button>
                                     <?php endif; ?>
-                                </form>
 
-                                <a href="anime-watching.html" class="watch-btn"><span>Watch Now</span> <i class="fa fa-angle-right"></i></a>
+                                    <a href="/anime-watching?id=<?= $show[0]['id'] ?>&ep=1" class="watch-btn"><span>Watch Now</span> <i class="fa fa-angle-right"></i></a>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -139,9 +139,10 @@ require_once './components/head.html.php';
                         <div class="section-title">
                             <h5>Your Comment</h5>
                         </div>
-                        <form action="#">
-                            <textarea placeholder="Your Comment"></textarea>
-                            <button type="submit">
+
+                        <form action="/anime-details?id=<?= $show[0]['id'] ?>" method="post">
+                            <textarea name="comment" placeholder="Your Comment"></textarea>
+                            <button name="submit_comment" type="submit">
                                 <i class="fa fa-location-arrow"></i> Review
                             </button>
                         </form>

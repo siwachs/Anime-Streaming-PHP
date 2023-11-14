@@ -9,7 +9,7 @@
                                 <div class="label"><?= $show['genres'] ?></div>
                                 <h2><?= $show['title'] ?></h2>
                                 <p><?= $show['description'] ?></p>
-                                <a href="/anime-details"><span>Watch Now</span> <i class="fa fa-angle-right"></i></a>
+                                <a href="/anime-watching?id=<?= $show['id'] ?>&ep=1"><span>Watch Now</span> <i class="fa fa-angle-right"></i></a>
                             </div>
                         </div>
                     </div>
