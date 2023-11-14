@@ -65,7 +65,7 @@ class ShowsModel
 
     public function getShowsByGenre($genre, $limit = null)
     {
-        $queryString = "SELECT shows.id AS id, shows.poster_image AS poster, shows.thumbnail_image AS thumbnail, shows.title as title, shows.num_of_episodes_avail AS numOfEpisodesAvail, shows.total_num_of_episodes AS totalEpisodes, shows.genres AS genres, COUNT(views.show_id) AS numOfViews FROM shows LEFT JOIN views ON shows.id = views.show_id WHERE MATCH(shows.genres) AGAINST ('" . $genre . "' IN BOOLEAN MODE) GROUP BY shows.id ORDER BY shows.id DESC";
+        $queryString = "SELECT shows.id AS id, shows.poster_image AS poster, shows.thumbnail_image AS thumbnail, shows.title as title, shows.num_of_episodes_avail AS numOfEpisodesAvail, shows.total_num_of_episodes AS totalEpisodes, shows.genres AS genres, COUNT(views.show_id) AS numOfViews FROM shows LEFT JOIN views ON shows.id = views.show_id WHERE shows.genres LIKE '%" . $genre . "%' GROUP BY shows.id ORDER BY shows.id DESC";
         return $this->getShows($queryString, $limit);
     }
 
@@ -115,5 +115,66 @@ class ShowsModel
             echo ShowsModel::ERROR_MESSAGE;
             return false;
         }
+    }
+
+    public function isViewed($showId, $userId)
+    {
+        $select = $this->connection->prepare('SELECT * FROM views WHERE show_id = :show_id AND user_id = :user_id');
+
+        try {
+            $select->execute([
+                ':show_id' => $showId,
+                ':user_id' => $userId,
+            ]);
+
+            $result = $select->fetchAll(\PDO::FETCH_ASSOC);
+            if (count($result) > 0) {
+                return true;
+            }
+
+            return false;
+        } catch (\PDOException $e) {
+            echo ShowsModel::ERROR_MESSAGE;
+            return false;
+        }
+    }
+
+    public function markAsViewed($showId, $userId)
+    {
+        $insert = $this->connection->prepare('INSERT INTO views (show_id, user_id) VALUES (:show_id, :user_id)');
+
+        try {
+            $insert->execute([
+                ':show_id' => $showId,
+                ':user_id' => $userId,
+            ]);
+        } catch (\PDOException $e) {
+            echo ShowsModel::ERROR_MESSAGE;
+            return false;
+        }
+    }
+
+    public function getFollowings($userId)
+    {
+        $queryString = 'SELECT shows.id AS id, shows.title AS title, shows.genres AS genres, shows.poster_image AS poster, shows.type AS type, shows.num_of_episodes_avail AS numOfEpisodesAvail, shows.total_num_of_episodes AS totalEpisodes FROM shows JOIN followings ON shows.id = followings.show_id WHERE followings.user_id = :userId';
+
+        $select = $this->connection->prepare($queryString);
+
+        try {
+            $select->execute([
+                ':userId' => $userId,
+            ]);
+
+            return $select->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo ShowsModel::ERROR_MESSAGE;
+            return false;
+        }
+    }
+
+    public function getShowsByKeyword($keyword, $limit = null)
+    {
+        $queryString = "SELECT shows.id AS id, shows.poster_image AS poster, shows.thumbnail_image AS thumbnail, shows.title as title, shows.num_of_episodes_avail AS numOfEpisodesAvail, shows.total_num_of_episodes AS totalEpisodes, shows.genres AS genres, COUNT(views.show_id) AS numOfViews FROM shows LEFT JOIN views ON shows.id = views.show_id WHERE shows.title LIKE '%" . $keyword . "%' GROUP BY shows.id ORDER BY shows.id DESC";
+        return $this->getShows($queryString, $limit);
     }
 }

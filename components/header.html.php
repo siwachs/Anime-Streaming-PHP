@@ -31,6 +31,7 @@
                     <span class="arrow_carrot-down"></span>
                   </a>
                   <ul class="dropdown">
+                    <li><a href="/user/followings">Followings</a></li>
                     <li><a href="<?php echo "/auth/signout" ?>">Sign Out</a></li>
                   </ul>
                 </li>
@@ -42,13 +43,19 @@
 
       <div class="col-lg-2">
         <div class="header__right">
-          <a href="#" class="search-switch"><span class="icon_search"></span></a>
+          <form action="/search" method="post" class="d-flex" role="search">
+            <input name="keyword" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button name="submit" style="color: #46392C; background-color: white; outline: none" class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+
           <?php if (!isset($_SESSION['email'])) : ?>
             <a href="/auth/signin"><span class="icon_profile"></span></a>
           <?php endif; ?>
         </div>
+
       </div>
     </div>
+
     <div id="mobile-menu-wrap"></div>
   </div>
 </header>

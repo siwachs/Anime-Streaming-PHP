@@ -25,7 +25,7 @@ class HomeController
 
         $heroSection = $this->showsModel->getAllShows();
         $trendingShows = $this->showsModel->getTrendingShows();
-        $adventureShows = $this->showsModel->getShowsByGenre('Adventure');
+        $adventureShows = $this->showsModel->getShowsByGenre('adv');
         $recentlyAddedShows = $this->showsModel->getRecentlyAddedShows();
         $liveActionShows = $this->showsModel->getShowsByGenre('Live');
         $forYouSection = $this->showsModel->getShowsByGenre('Adventure');

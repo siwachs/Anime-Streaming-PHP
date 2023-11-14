@@ -95,7 +95,7 @@ require_once './components/head.html.php';
                             <div class="anime__details__btn">
                                 <form action="/anime-details?id=<?= $show[0]['id'] ?>" method="post">
                                     <input type="text" value="<?= $show[0]['id'] ?>" name="show_id" hidden>
-                                    <input type="text" value="<?= $_SESSION['id'] ?>" name="user_id" hidden>
+                                    <input type="text" value="<?= isset($_SESSION['id']) ? $_SESSION['id'] : '' ?>" name="user_id" hidden>
                                     <?php if (count($isFollowed) > 0) : ?>
                                         <button name="submit" class="follow-btn" disabled><i class="fa fa-heart-o"></i>Followed</button>
                                     <?php else : ?>

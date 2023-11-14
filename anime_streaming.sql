@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2023 at 05:35 AM
+-- Generation Time: Nov 14, 2023 at 04:43 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -30,9 +30,10 @@ SET time_zone = "+00:00";
 CREATE TABLE `comments` (
   `id` int(11) NOT NULL,
   `show_id` int(11) NOT NULL,
+  `ep_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `comment` text NOT NULL,
   `username` varchar(200) NOT NULL,
+  `comment` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -40,14 +41,35 @@ CREATE TABLE `comments` (
 -- Dumping data for table `comments`
 --
 
-INSERT INTO `comments` (`id`, `show_id`, `user_id`, `comment`, `username`, `created_at`) VALUES
-(1, 1, 1, 'Move over, reality TV! The iDOLM@STER Million Live! is the ultimate fantasy escape, where dreams come to life on the stage. It\'s not just an anime; it\'s a front-row ticket to the most dazzling dreamscape ever!', 'user', '2023-11-13 13:43:30'),
-(2, 1, 1, 'Who needs a magic carpet when you can ride the wave of dreams with Mirai Kasuga, Shizuka Mogami, and Tsubasa Ibuki? The iDOLM@STER Million Live! is the Aladdin\'s cave of idol anime, where every wish is a step closer to stardom!', 'user', '2023-11-13 13:43:30'),
-(3, 1, 1, 'Forget reality checks; The iDOLM@STER Million Live! is here to cash in your wildest dreams and hand you a VIP pass to the most spectacular idol extravaganza. Get ready to trade your everyday routine for a front-row seat in the theater of dreams!', 'user', '2023-11-13 13:43:30'),
-(4, 1, 1, 'If you thought daydreaming was just a pastime, think again! The iDOLM@STER Million Live! is the masterclass in turning dreams into reality, where every note sung and every step danced is a step closer to the ethereal realm of idol stardom!', 'user', '2023-11-13 13:43:30'),
-(5, 2, 1, 'make comment', 'username', '2023-11-14 04:08:18'),
-(6, 2, 1, 'Place another', 'username', '2023-11-14 04:08:32'),
-(7, 2, 1, 'comment...\r\n', 'username', '2023-11-14 04:12:21');
+INSERT INTO `comments` (`id`, `show_id`, `ep_id`, `user_id`, `username`, `comment`, `created_at`) VALUES
+(1, 1, 1, 1, 'user', 'Comment inserted...', '2023-11-14 09:05:08'),
+(2, 1, 1, 1, 'user', 'Second comment...', '2023-11-14 09:05:08'),
+(6, 1, 2, 1, 'username', 'comments', '2023-11-14 09:30:54'),
+(7, 1, 1, 1, 'username', 'new', '2023-11-14 09:31:06');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `episodes`
+--
+
+CREATE TABLE `episodes` (
+  `id` int(11) NOT NULL,
+  `show_id` int(11) NOT NULL,
+  `video` varchar(255) NOT NULL,
+  `video_thumbnail` varchar(255) NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `episodes`
+--
+
+INSERT INTO `episodes` (`id`, `show_id`, `video`, `video_thumbnail`, `title`, `created_at`) VALUES
+(1, 1, '/assets/videos/1.mp4', '/assets/videos/anime-watch.jpg', 'Ep 01', '2023-11-14 04:58:03'),
+(2, 1, '/assets/videos/2.mp4', '/assets/videos/anime-watch.jpg', 'Ep 02', '2023-11-14 04:58:03'),
+(3, 1, '/assets/videos/1.mp4', '/assets/videos/anime-watch.jpg', 'Ep 03', '2023-11-14 04:58:03');
 
 -- --------------------------------------------------------
 
@@ -69,7 +91,8 @@ CREATE TABLE `followings` (
 INSERT INTO `followings` (`id`, `show_id`, `user_id`, `created_at`) VALUES
 (8, 1, 1, '2023-11-13 16:50:03'),
 (9, 2, 1, '2023-11-13 16:57:20'),
-(10, 5, 1, '2023-11-13 16:57:35');
+(10, 5, 1, '2023-11-13 16:57:35'),
+(13, 3, 2, '2023-11-14 14:15:42');
 
 -- --------------------------------------------------------
 
@@ -101,6 +124,34 @@ INSERT INTO `genres` (`id`, `name`, `created_at`) VALUES
 (11, 'Comedy', '2023-11-12 04:13:05'),
 (12, 'Horrer', '2023-11-12 04:13:05'),
 (13, 'Fantasy', '2023-11-12 04:13:05');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reviews`
+--
+
+CREATE TABLE `reviews` (
+  `id` int(11) NOT NULL,
+  `show_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `comment` text NOT NULL,
+  `username` varchar(200) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reviews`
+--
+
+INSERT INTO `reviews` (`id`, `show_id`, `user_id`, `comment`, `username`, `created_at`) VALUES
+(1, 1, 1, 'Move over, reality TV! The iDOLM@STER Million Live! is the ultimate fantasy escape, where dreams come to life on the stage. It\'s not just an anime; it\'s a front-row ticket to the most dazzling dreamscape ever!', 'user', '2023-11-13 13:43:30'),
+(2, 1, 1, 'Who needs a magic carpet when you can ride the wave of dreams with Mirai Kasuga, Shizuka Mogami, and Tsubasa Ibuki? The iDOLM@STER Million Live! is the Aladdin\'s cave of idol anime, where every wish is a step closer to stardom!', 'user', '2023-11-13 13:43:30'),
+(3, 1, 1, 'Forget reality checks; The iDOLM@STER Million Live! is here to cash in your wildest dreams and hand you a VIP pass to the most spectacular idol extravaganza. Get ready to trade your everyday routine for a front-row seat in the theater of dreams!', 'user', '2023-11-13 13:43:30'),
+(4, 1, 1, 'If you thought daydreaming was just a pastime, think again! The iDOLM@STER Million Live! is the masterclass in turning dreams into reality, where every note sung and every step danced is a step closer to the ethereal realm of idol stardom!', 'user', '2023-11-13 13:43:30'),
+(5, 2, 1, 'make comment', 'username', '2023-11-14 04:08:18'),
+(6, 2, 1, 'Place another', 'username', '2023-11-14 04:08:32'),
+(7, 2, 1, 'comment...\r\n', 'username', '2023-11-14 04:12:21');
 
 -- --------------------------------------------------------
 
@@ -157,7 +208,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `created_at`) VALUES
-(1, 'username', 'email@gmail.com', '$2y$10$C5tgi9j.Oj/awAYUbXmAl.2dvHSjFQjUvmzdlDFqMb3JoXLI5v.vy', '2023-11-12 04:14:02');
+(1, 'username', 'email@gmail.com', '$2y$10$C5tgi9j.Oj/awAYUbXmAl.2dvHSjFQjUvmzdlDFqMb3JoXLI5v.vy', '2023-11-12 04:14:02'),
+(2, 'username', 'new@gmail.com', '$2y$10$ID30g1HKW3ppFVQsxLCTe.vn8dJzP9F615UJaohrkMUL9MAZ4enA2', '2023-11-14 14:14:50');
 
 -- --------------------------------------------------------
 
@@ -177,48 +229,13 @@ CREATE TABLE `views` (
 --
 
 INSERT INTO `views` (`id`, `show_id`, `user_id`, `created_at`) VALUES
-(1, 1, 1, '0000-00-00 00:00:00'),
-(2, 1, 1, '0000-00-00 00:00:00'),
-(3, 1, 1, '0000-00-00 00:00:00'),
-(4, 1, 1, '0000-00-00 00:00:00'),
-(5, 1, 1, '0000-00-00 00:00:00'),
-(6, 2, 1, '0000-00-00 00:00:00'),
-(7, 2, 1, '0000-00-00 00:00:00'),
-(8, 2, 1, '0000-00-00 00:00:00'),
-(9, 2, 1, '0000-00-00 00:00:00'),
-(10, 0, 3, '0000-00-00 00:00:00'),
-(11, 2, 1, '0000-00-00 00:00:00'),
-(12, 3, 1, '0000-00-00 00:00:00'),
-(13, 5, 1, '0000-00-00 00:00:00'),
-(14, 5, 1, '0000-00-00 00:00:00'),
-(15, 5, 1, '0000-00-00 00:00:00'),
-(16, 5, 1, '0000-00-00 00:00:00'),
-(17, 3, 1, '0000-00-00 00:00:00'),
-(18, 3, 1, '0000-00-00 00:00:00'),
-(19, 1, 1, '0000-00-00 00:00:00'),
-(20, 1, 1, '0000-00-00 00:00:00'),
-(21, 1, 1, '2023-11-12 04:51:18'),
-(22, 1, 1, '2023-11-12 04:51:18'),
-(23, 1, 1, '2023-11-12 04:51:18'),
-(24, 1, 1, '2023-11-12 04:51:18'),
-(25, 1, 1, '2023-11-12 04:51:18'),
-(26, 1, 1, '2023-11-12 04:51:18'),
-(27, 1, 1, '2023-11-12 04:51:18'),
-(28, 1, 1, '2023-11-12 04:51:18'),
-(29, 2, 1, '2023-11-12 04:51:18'),
-(30, 2, 1, '2023-11-12 04:51:18'),
-(31, 2, 1, '2023-11-12 04:51:18'),
-(32, 2, 1, '2023-11-12 04:51:18'),
-(33, 4, 1, '2023-11-12 04:51:18'),
-(34, 4, 1, '2023-11-12 04:51:18'),
-(35, 3, 1, '2023-11-12 04:51:18'),
-(36, 5, 1, '2023-11-12 04:51:18'),
-(37, 5, 1, '2023-11-12 04:51:18'),
-(38, 2, 1, '2023-11-12 04:51:18'),
-(39, 1, 1, '2023-11-12 04:51:18'),
-(40, 1, 1, '2023-11-12 04:51:18'),
-(41, 1, 1, '2023-11-12 04:51:18'),
-(42, 2, 1, '2023-11-12 04:51:18');
+(47, 5, 1, '2023-11-14 14:12:24'),
+(48, 6, 1, '2023-11-14 14:12:37'),
+(49, 2, 1, '2023-11-14 14:12:44'),
+(50, 3, 1, '2023-11-14 14:12:49'),
+(51, 5, 2, '2023-11-14 14:15:33'),
+(52, 3, 2, '2023-11-14 14:15:38'),
+(53, 1, 2, '2023-11-14 14:15:56');
 
 --
 -- Indexes for dumped tables
@@ -228,6 +245,12 @@ INSERT INTO `views` (`id`, `show_id`, `user_id`, `created_at`) VALUES
 -- Indexes for table `comments`
 --
 ALTER TABLE `comments`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `episodes`
+--
+ALTER TABLE `episodes`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -243,11 +266,16 @@ ALTER TABLE `genres`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `reviews`
+--
+ALTER TABLE `reviews`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `shows`
 --
 ALTER TABLE `shows`
   ADD PRIMARY KEY (`id`);
-ALTER TABLE `shows` ADD FULLTEXT KEY `genres` (`genres`);
 
 --
 -- Indexes for table `users`
@@ -272,16 +300,28 @@ ALTER TABLE `comments`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT for table `episodes`
+--
+ALTER TABLE `episodes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `followings`
 --
 ALTER TABLE `followings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `genres`
 --
 ALTER TABLE `genres`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `reviews`
+--
+ALTER TABLE `reviews`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `shows`
@@ -293,13 +333,13 @@ ALTER TABLE `shows`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `views`
 --
 ALTER TABLE `views`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

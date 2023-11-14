@@ -51,7 +51,15 @@ class AnimeDetailsController
                 header("Location: /anime-details?id=" . $_GET['id']);
             }
 
-            $isFollowed = $this->showsModel->isShowFollowed($_GET['id'], $_SESSION['id']);
+            $isFollowed = isset($_SESSION['email']) ? $this->showsModel->isShowFollowed($_GET['id'], $_SESSION['id']) : [];
+
+            if (isset($_SESSION['email'])) {
+                $isViewed = $this->showsModel->isViewed($_GET['id'], $_SESSION['id']);
+
+                if (!$isViewed) {
+                    $this->showsModel->markAsViewed($_GET['id'], $_SESSION['id']);
+                }
+            }
 
             include_once './views/anime_details.view.php';
         }

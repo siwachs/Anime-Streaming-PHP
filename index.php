@@ -6,12 +6,16 @@ require_once './controllers/GenresController.php';
 require_once './controllers/AuthController.php';
 require_once './controllers/AnimeDetailsController.php';
 require_once './controllers/AnimeWatchingController.php';
+require_once './controllers/FollowingsController.php';
+require_once './controllers/SearchController.php';
 
 use controllers\HomeController;
 use controllers\GenresController;
 use controllers\AuthController;
 use controllers\AnimeDetailsController;
 use controllers\AnimeWatchingController;
+use controllers\FollowingsController;
+use controllers\SearchController;
 
 $request_uri = $_SERVER['REQUEST_URI'];
 session_start();
@@ -57,6 +61,14 @@ switch ($path) {
         $animeWatchingController = new AnimeWatchingController();
         $animeWatchingController->index();
         break;
+    case '/user/followings':
+        $followingsController = new FollowingsController();
+        $followingsController->index();
+        break;
+    case '/search':
+        $searchController = new SearchController();
+        $searchController->index();
+        break;
     default:
-        echo 'Page not found.';
+        include_once './views/404.view.php';
 }
