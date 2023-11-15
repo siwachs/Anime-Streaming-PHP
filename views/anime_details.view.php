@@ -16,11 +16,11 @@ require_once './components/head.html.php';
                     <div class="breadcrumb__links">
                         <a href="/"><i class="fa fa-home"></i> Home</a>
                         <a href="/genres">Genres</a>
-                        <a href="/genres?name=<?= explode(',', $show[0]['genres'])[0] ?>">
-                            <?= explode(',', $show[0]['genres'])[0] ?>
+                        <a href="/genres?name=<?= explode(',', $show['genres'])[0] ?>">
+                            <?= explode(',', $show['genres'])[0] ?>
                         </a>
                         <span>
-                            <?= $show[0]['title'] ?>
+                            <?= $show['title'] ?>
                         </span>
                     </div>
                 </div>
@@ -34,10 +34,10 @@ require_once './components/head.html.php';
             <div class="anime__details__content">
                 <div class="row">
                     <div class="col-lg-3">
-                        <div class="anime__details__pic set-bg" data-setbg="<?= $show[0]['poster'] ?>">
-                            <div class="comment"><i class="fa fa-comments"></i> 0</div>
+                        <div class="anime__details__pic set-bg" data-setbg="<?= $show['poster'] ?>">
+                            <div class="comment"><i class="fa fa-comments"></i>0</div>
                             <div class="view"><i class="fa fa-eye"></i>
-                                <?= $show[0]['numOfViews'] ?>
+                                <?= $show['numOfViews'] ?>
                             </div>
                         </div>
                     </div>
@@ -46,28 +46,28 @@ require_once './components/head.html.php';
                         <div class="anime__details__text">
                             <div class="anime__details__title">
                                 <h3>
-                                    <?= $show[0]['title'] ?>
+                                    <?= $show['title'] ?>
                                 </h3>
                             </div>
 
                             <p>
-                                <?= $show[0]['description'] ?>
+                                <?= $show['description'] ?>
                             </p>
                             <div class="anime__details__widget">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6">
                                         <ul>
                                             <li><span>Type:</span>
-                                                <?= $show[0]['type'] ?>
+                                                <?= $show['type'] ?>
                                             </li>
                                             <li><span>Studios:</span>
-                                                <?= $show[0]['studios'] ?>
+                                                <?= $show['studios'] ?>
                                             </li>
                                             <li><span>Date aired:</span>
-                                                <?= $show[0]['dateAired'] ?>
+                                                <?= $show['dateAired'] ?>
                                             </li>
                                             <li><span>Status:</span>
-                                                <?= $show[0]['status'] ?>
+                                                <?= $show['status'] ?>
                                             </li>
                                         </ul>
                                     </div>
@@ -75,17 +75,17 @@ require_once './components/head.html.php';
                                         <ul>
                                             <li>
                                                 <span>Genre:</span>
-                                                <?= $show[0]['genres'] ?>
+                                                <?= $show['genres'] ?>
                                             </li>
 
                                             <li><span>Duration:</span>
-                                                <?= $show[0]['duration'] ?>
+                                                <?= $show['duration'] ?>
                                             </li>
                                             <li><span>Quality:</span>
-                                                <?= $show[0]['quality'] ?>
+                                                <?= $show['quality'] ?>
                                             </li>
                                             <li><span>Views:</span>
-                                                <?= $show[0]['numOfViews'] ?>
+                                                <?= $show['numOfViews'] ?>
                                             </li>
                                         </ul>
                                     </div>
@@ -93,16 +93,16 @@ require_once './components/head.html.php';
                             </div>
 
                             <div class="anime__details__btn">
-                                <form action="/anime-details?id=<?= $show[0]['id'] ?>" method="post">
-                                    <input type="text" value="<?= $show[0]['id'] ?>" name="show_id" hidden>
-                                    <input type="text" value="<?= isset($_SESSION['id']) ? $_SESSION['id'] : '' ?>" name="user_id" hidden>
-                                    <?php if (count($isFollowed) > 0) : ?>
-                                        <button name="submit" class="follow-btn" disabled><i class="fa fa-heart-o"></i>Followed</button>
+                                <form action="" method="post">
+                                    <input type="text" value="<?= $_GET['id'] ?>" name="showId" hidden>
+                                    <input type="text" value="<?= isset($_SESSION['id']) ? $_SESSION['id'] : '' ?>" name="userId" hidden>
+                                    <?php if ($isFollowed) : ?>
+                                        <button class="follow-btn" disabled><i class="fa fa-heart-o"></i>Followed</button>
                                     <?php else : ?>
-                                        <button name="submit" class="follow-btn"><i class="fa fa-heart-o"></i>Follow</button>
+                                        <button name="followShow" class="follow-btn"><i class="fa fa-heart-o"></i>Follow</button>
                                     <?php endif; ?>
 
-                                    <a href="/anime-watching?id=<?= $show[0]['id'] ?>&ep=1" class="watch-btn"><span>Watch Now</span> <i class="fa fa-angle-right"></i></a>
+                                    <a href="/anime-watching?id=<?= $show['id'] ?>&ep=1" class="watch-btn"><span>Watch Now</span> <i class="fa fa-angle-right"></i></a>
                                 </form>
                             </div>
                         </div>
@@ -119,7 +119,7 @@ require_once './components/head.html.php';
                         <?php foreach ($comments as $comment) : ?>
                             <div class="anime__review__item">
                                 <div class="anime__review__item__pic">
-                                    <img src="assets/img/anime/review-1.jpg" alt="" />
+                                    <img src="https://i.pinimg.com/736x/0a/53/c3/0a53c3bbe2f56a1ddac34ea04a26be98.jpg" alt="" />
                                 </div>
                                 <div class="anime__review__item__text">
                                     <h6>

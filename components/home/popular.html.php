@@ -7,12 +7,12 @@
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4">
             <div class="btn__all">
-                <a href="#" class="primary-btn">View All <span class="arrow_right"></span></a>
+                <a href="#" class="primary-btn">View All<span class="arrow_right"></span></a>
             </div>
         </div>
     </div>
     <div class="row">
-        <?php foreach ($adventureShows as $show): ?>
+        <?php foreach ($popularShows as $show) : ?>
             <div class="col-sm-6 col-md-6 col-lg-4">
                 <div class="product__item">
                     <div class="product__item__pic set-bg" data-setbg="<?= $show['poster'] ?>">
@@ -27,17 +27,11 @@
                     </div>
                     <div class="product__item__text">
                         <ul>
-                            <?php
-                            $genres = explode(',', $show['genres']);
-
-                            foreach ($genres as $genre) {
-                                echo '<li>' . $genre . '</li>';
-                            }
-                            ?>
+                            <?= '<li>' . implode('</li><li>', array_map('trim', explode(',', $show['genres']))) . '</li>'; ?>
                         </ul>
-                        <h5><a href="/anime-details?id=<?= $show['id'] ?>">
-                                <?= $show['title'] ?>
-                            </a></h5>
+                        <h5>
+                            <a href="/anime-details?id=<?= $show['id'] ?>"> <?= $show['title'] ?></a>
+                        </h5>
                     </div>
                 </div>
             </div>

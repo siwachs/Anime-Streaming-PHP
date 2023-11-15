@@ -19,16 +19,16 @@ class HomeController
         $this->genres = GenresModel::getInstance()->getAllGenres();
     }
 
-    public function index()
+    public function index($popularShowsKeyword, $forYouSectionKeyword)
     {
         $genres = $this->genres;
 
-        $heroSection = $this->showsModel->getAllShows();
-        $trendingShows = $this->showsModel->getTrendingShows();
-        $adventureShows = $this->showsModel->getShowsByGenre('adv');
-        $recentlyAddedShows = $this->showsModel->getRecentlyAddedShows();
+        $heroSection = $this->showsModel->getAllShows(6);
+        $trendingShows = $this->showsModel->getTrendingShows(6);
+        $popularShows = $this->showsModel->getShowsByGenre($popularShowsKeyword);
+        $recentlyAddedShows = $this->showsModel->getRecentlyAddedShows(6);
         $liveActionShows = $this->showsModel->getShowsByGenre('Live');
-        $forYouSection = $this->showsModel->getShowsByGenre('Adventure');
+        $forYouSection = $this->showsModel->getShowsByGenre($forYouSectionKeyword);
 
         include_once './views/home.view.php';
     }

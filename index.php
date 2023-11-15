@@ -18,16 +18,18 @@ use controllers\FollowingsController;
 use controllers\SearchController;
 
 $request_uri = $_SERVER['REQUEST_URI'];
-session_start();
-Database::getInstance()->getConnection();
-
 $parsed_url = parse_url($request_uri);
 $path = $parsed_url['path'];
+
+session_start();
+$serverTimeZone = date_default_timezone_get();
+date_default_timezone_set($serverTimeZone);
+Database::getInstance()->getConnection();
 
 switch ($path) {
     case '/':
         $homeController = new HomeController();
-        $homeController->index();
+        $homeController->index('Adventure', 'comedy');
         break;
     case '/genres':
         $genresController = new GenresController(isset($_GET['name']) ? $_GET['name'] : 'All');
@@ -35,7 +37,7 @@ switch ($path) {
         break;
     case '/auth/signup':
         $authController = AuthController::getInstance();
-        if (isset($_SESSION['email'])) {
+        if (isset($_SESSION['id'])) {
             $authController->redirectTo('/');
         } else {
             $authController->signUp();

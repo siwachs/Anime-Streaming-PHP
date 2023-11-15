@@ -2,24 +2,20 @@
     <div class="product__sidebar__view">
     </div>
 </div>
+
 <div class="product__sidebar__comment">
     <div class="section-title">
         <h5>For You</h5>
     </div>
-    <?php foreach ($forYouSection as $show): ?>
+    <?php foreach ($forYouSection as $show) : ?>
         <div class="product__sidebar__comment__item">
             <div class="product__sidebar__comment__item__pic">
-                <img src="img/sidebar/comment-1.jpg" alt="">
+                <img src="<?= $show['poster'] ?>" alt="">
             </div>
+
             <div class="product__sidebar__comment__item__text">
                 <ul>
-                    <?php
-                    $genres = explode(',', $show['genres']);
-
-                    foreach ($genres as $genre) {
-                        echo '<li>' . $genre . '</li>';
-                    }
-                    ?>
+                    <?= '<li>' . implode('</li><li>', array_map('trim', explode(',', $show['genres']))) . '</li>'; ?>
                 </ul>
                 <h5><a href="/anime-details?id=<?= $show['id'] ?>">
                         <?= $show['title'] ?>

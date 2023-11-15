@@ -27,7 +27,7 @@ class ShowsModel
         return self::$instance;
     }
 
-    private function getShows($queryString, $id = null, $limit = null)
+    private function getShows($queryString, $limit = null)
     {
         if (isset($limit)) {
             $queryString .= ' LIMIT :limit';
@@ -38,22 +38,17 @@ class ShowsModel
             $select->bindParam(':limit', $limit, \PDO::PARAM_INT);
         }
 
-        if (isset($id)) {
-            $select->bindParam(':id', $id, \PDO::PARAM_INT);
-        }
-
         try {
             $select->execute();
             return $select->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\Exception $e) {
             echo ShowsModel::ERROR_MESSAGE;
-            return null;
         }
     }
 
     public function getAllShows($limit = null)
     {
-        $queryString = 'SELECT * FROM shows';
+        $queryString = 'SELECT shows.id AS id, shows.thumbnail_image as thumbnail, shows.genres AS genres, shows.title AS title, shows.description AS description, episodes.id AS epId FROM shows JOIN episodes ON shows.id = episodes.show_id GROUP BY shows.id';
         return $this->getShows($queryString, $limit);
     }
 
@@ -77,80 +72,46 @@ class ShowsModel
 
     public function getShowById($id)
     {
-        $queryString = 'SELECT shows.id AS id, shows.poster_image AS poster, shows.title AS title, shows.description AS description, shows.genres AS genres, shows.type AS type, shows.studios AS studios, shows.date_aired  AS dateAired, shows.status AS status, shows.duration as duration, shows.quality AS quality, COUNT(views.show_id) AS numOfViews FROM shows LEFT JOIN views ON shows.id = views.show_id WHERE shows.id = :id GROUP BY shows.id';
-        $show = $this->getShows($queryString, $id);
-        if ($show) {
-            return $show;
-        }
+        $queryString = 'SELECT shows.id AS id, shows.poster_image AS poster, shows.title AS title, shows.description AS description, shows.genres AS genres, shows.type AS type, shows.studios AS studios, shows.date_aired AS dateAired, shows.status AS status, shows.duration as duration, shows.quality AS quality, COUNT(views.show_id) AS numOfViews FROM shows LEFT JOIN views ON shows.id = views.show_id WHERE shows.id = :id GROUP BY shows.id';
 
-        return null;
+        $select = $this->connection->prepare($queryString);
+        try {
+            $select->execute([
+                ':id' => $id
+            ]);
+            return $select->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\Exception $e) {
+            echo ShowsModel::ERROR_MESSAGE;
+        }
     }
 
-    public function followShow($show_id, $user_id)
+    public function followShow($showId, $userId)
     {
-        $insert = $this->connection->prepare('INSERT INTO followings (show_id, user_id) VALUES (:show_id, :user_id)');
+        $insert = $this->connection->prepare('INSERT INTO followings (show_id, user_id) VALUES (:showId, :userId)');
 
         try {
             $insert->execute([
-                ':show_id' => $show_id,
-                ':user_id' => $user_id,
+                ':showId' => $showId,
+                ':userId' => $userId,
             ]);
         } catch (\PDOException $e) {
             echo ShowsModel::ERROR_MESSAGE;
         }
     }
 
-    public function isShowFollowed($show_id, $user_id)
+    public function isShowFollowed($showId, $userId)
     {
-        $select = $this->connection->prepare('SELECT * FROM followings WHERE show_id = :show_id AND user_id = :user_id');
+        $select = $this->connection->prepare('SELECT * FROM followings WHERE show_id = :showId AND user_id = :userId');
 
         try {
             $select->execute([
-                ':show_id' => $show_id,
-                ':user_id' => $user_id,
+                ':showId' => $showId,
+                ':userId' => $userId,
             ]);
 
             return $select->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
             echo ShowsModel::ERROR_MESSAGE;
-            return false;
-        }
-    }
-
-    public function isViewed($showId, $userId)
-    {
-        $select = $this->connection->prepare('SELECT * FROM views WHERE show_id = :show_id AND user_id = :user_id');
-
-        try {
-            $select->execute([
-                ':show_id' => $showId,
-                ':user_id' => $userId,
-            ]);
-
-            $result = $select->fetchAll(\PDO::FETCH_ASSOC);
-            if (count($result) > 0) {
-                return true;
-            }
-
-            return false;
-        } catch (\PDOException $e) {
-            echo ShowsModel::ERROR_MESSAGE;
-            return false;
-        }
-    }
-
-    public function markAsViewed($showId, $userId)
-    {
-        $insert = $this->connection->prepare('INSERT INTO views (show_id, user_id) VALUES (:show_id, :user_id)');
-
-        try {
-            $insert->execute([
-                ':show_id' => $showId,
-                ':user_id' => $userId,
-            ]);
-        } catch (\PDOException $e) {
-            echo ShowsModel::ERROR_MESSAGE;
-            return false;
         }
     }
 
@@ -168,7 +129,36 @@ class ShowsModel
             return $select->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
             echo ShowsModel::ERROR_MESSAGE;
-            return false;
+        }
+    }
+
+    public function isViewed($showId, $userId)
+    {
+        $select = $this->connection->prepare('SELECT * FROM views WHERE show_id = :showId AND user_id = :userId');
+
+        try {
+            $select->execute([
+                ':showId' => $showId,
+                ':userId' => $userId,
+            ]);
+
+            return $select->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo ShowsModel::ERROR_MESSAGE;
+        }
+    }
+
+    public function markAsViewed($showId, $userId)
+    {
+        $insert = $this->connection->prepare('INSERT INTO views (show_id, user_id) VALUES (:showId, :userId)');
+
+        try {
+            $insert->execute([
+                ':showId' => $showId,
+                ':userId' => $userId,
+            ]);
+        } catch (\PDOException $e) {
+            echo ShowsModel::ERROR_MESSAGE;
         }
     }
 

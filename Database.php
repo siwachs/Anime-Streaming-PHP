@@ -1,5 +1,7 @@
 <?php
 
+require_once './config.php';
+
 class Database
 {
     private static $instance;
@@ -7,12 +9,11 @@ class Database
 
     public function __construct()
     {
-        require_once './config.php';
         try {
             $this->connection = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, USER, PASSWORD);
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            echo "" . $e->getMessage() . "";
+            echo "Erro in DB connection.";
         }
     }
 

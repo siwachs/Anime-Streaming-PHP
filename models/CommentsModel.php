@@ -8,6 +8,8 @@ require_once './Database.php';
 
 class CommentsModel
 {
+    const ERROR_MESSAGE = 'There is a Error in Query';
+
     private static $instance;
     private $connection;
 
@@ -48,14 +50,13 @@ class CommentsModel
             $select->execute();
             return $select->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\Exception $e) {
-            echo 'There is a Error in Query';
-            return null;
+            echo CommentsModel::ERROR_MESSAGE;
         }
     }
 
     public function getReviewsByShowId($showId)
     {
-        $queryString = 'SELECT * FROM reviews WHERE show_id = :showId';
+        $queryString = 'SELECT * FROM reviews WHERE show_id = :showId ORDER BY created_at DESC';
         return $this->getComments($queryString, $showId);
     }
 
