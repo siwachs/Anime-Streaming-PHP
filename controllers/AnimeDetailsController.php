@@ -67,6 +67,11 @@ class AnimeDetailsController
             header('Location: /anime-details?id=' . $_GET['id']);
         }
 
+        if (isset($_SESSION['id']) && isset($_POST['submitComment']) && isset($_POST['comment'])) {
+            $this->commentsModel->insertReview($_GET['id'], $_SESSION['id'], $_POST['comment'], $_SESSION['username']);
+            header('Location: /anime-details?id=' . $_GET['id']);
+        }
+
         $show = $showArray[0];
         $youMightLike = $this->showsModel->getShowsByGenre($show['genres']);
         $comments = $this->commentsModel->getReviewsByShowId($_GET['id']);

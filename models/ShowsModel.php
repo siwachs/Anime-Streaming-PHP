@@ -72,7 +72,7 @@ class ShowsModel
 
     public function getShowById($id)
     {
-        $queryString = 'SELECT shows.id AS id, shows.poster_image AS poster, shows.title AS title, shows.description AS description, shows.genres AS genres, shows.type AS type, shows.studios AS studios, shows.date_aired AS dateAired, shows.status AS status, shows.duration as duration, shows.quality AS quality, COUNT(views.show_id) AS numOfViews FROM shows LEFT JOIN views ON shows.id = views.show_id WHERE shows.id = :id GROUP BY shows.id';
+        $queryString = 'SELECT shows.id AS id, shows.poster_image AS poster, shows.title AS title, shows.description AS description, shows.genres AS genres, shows.type AS type, shows.studios AS studios, shows.date_aired AS dateAired, shows.status AS status, shows.duration as duration, shows.quality AS quality, COUNT(views.show_id) AS numOfViews, episodes.id AS epId FROM shows LEFT JOIN views ON shows.id = views.show_id LEFT JOIN episodes ON shows.id = episodes.show_id WHERE shows.id = :id GROUP BY shows.id';
 
         $select = $this->connection->prepare($queryString);
         try {

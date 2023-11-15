@@ -102,7 +102,9 @@ require_once './components/head.html.php';
                                         <button name="followShow" class="follow-btn"><i class="fa fa-heart-o"></i>Follow</button>
                                     <?php endif; ?>
 
-                                    <a href="/anime-watching?id=<?= $show['id'] ?>&ep=1" class="watch-btn"><span>Watch Now</span> <i class="fa fa-angle-right"></i></a>
+                                    <?php if (isset($show['epId'])) : ?>
+                                        <a href="/anime-watching?id=<?= $show['id'] ?>&ep=<?= $show['epId'] ?>" class="watch-btn"><span>Watch Now</span> <i class="fa fa-angle-right"></i></a>
+                                    <?php endif; ?>
                                 </form>
                             </div>
                         </div>
@@ -137,12 +139,12 @@ require_once './components/head.html.php';
 
                     <div class="anime__details__form">
                         <div class="section-title">
-                            <h5>Your Comment</h5>
+                            <h5>Your Review</h5>
                         </div>
 
-                        <form action="/anime-details?id=<?= $show[0]['id'] ?>" method="post">
+                        <form action="" method="post">
                             <textarea name="comment" placeholder="Your Comment"></textarea>
-                            <button name="submit_comment" type="submit">
+                            <button name="submitComment" type="submit">
                                 <i class="fa fa-location-arrow"></i> Review
                             </button>
                         </form>

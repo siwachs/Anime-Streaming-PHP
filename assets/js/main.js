@@ -40,7 +40,7 @@
       ],
       animateOut: "fadeOut",
       animateIn: "fadeIn",
-      smartSpeed: 4500,
+      smartSpeed: 6500,
       autoHeight: false,
       autoplay: true,
       mouseDrag: true,

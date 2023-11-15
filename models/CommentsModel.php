@@ -60,6 +60,22 @@ class CommentsModel
         return $this->getComments($queryString, $showId);
     }
 
+    public function insertReview($showId, $userId, $comment, $username)
+    {
+        $queryString = 'INSERT INTO reviews (show_id, user_id, comment, username) VALUES (:showId, :userId, :comment, :username)';
+        $insert = $this->connection->prepare($queryString);
+        try {
+            $insert->execute([
+                ':showId' => $showId,
+                'userId' => $userId,
+                ':comment' => $comment,
+                ':username' => $username
+            ]);
+        } catch (\Exception $e) {
+            echo CommentsModel::ERROR_MESSAGE;
+        }
+    }
+
     public function getEpisodesComment($showId, $epId)
     {
         $queryString = 'SELECT * FROM comments WHERE show_id = :showId AND ep_id = :epId';
@@ -77,22 +93,6 @@ class CommentsModel
                 ':comment' => $comment,
                 ':username' => $username,
                 ':ep_id' => $epId,
-            ]);
-        } catch (\Exception $e) {
-            echo 'There is a Error in Query';
-        }
-    }
-
-    public function insertReview($showId, $userId, $comment, $username)
-    {
-        $queryString = 'INSERT INTO reviews (show_id, user_id, comment, username) VALUES (:show_id, :user_id, :comment, :username)';
-        $insert = $this->connection->prepare($queryString);
-        try {
-            $insert->execute([
-                ':show_id' => $showId,
-                'user_id' => $userId,
-                ':comment' => $comment,
-                ':username' => $username
             ]);
         } catch (\Exception $e) {
             echo 'There is a Error in Query';
