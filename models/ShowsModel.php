@@ -164,7 +164,7 @@ class ShowsModel
 
     public function getShowsByKeyword($keyword, $limit = null)
     {
-        $queryString = "SELECT shows.id AS id, shows.poster_image AS poster, shows.thumbnail_image AS thumbnail, shows.title as title, shows.num_of_episodes_avail AS numOfEpisodesAvail, shows.total_num_of_episodes AS totalEpisodes, shows.genres AS genres, COUNT(views.show_id) AS numOfViews FROM shows LEFT JOIN views ON shows.id = views.show_id WHERE shows.title LIKE '%" . $keyword . "%' GROUP BY shows.id ORDER BY shows.id DESC";
+        $queryString = "SELECT shows.id AS id, shows.poster_image AS poster, shows.title as title, shows.num_of_episodes_avail AS numOfEpisodesAvail, shows.total_num_of_episodes AS totalEpisodes, shows.genres AS genres FROM shows WHERE shows.title LIKE '%" . $keyword . "%' ORDER BY created_at DESC";
         return $this->getShows($queryString, $limit);
     }
 }

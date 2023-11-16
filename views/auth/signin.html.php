@@ -14,7 +14,7 @@ require_once './components/head.html.php';
                 <div class="col-lg-12 text-center">
                     <div class="normal__breadcrumb__text">
                         <h2>Sign In</h2>
-                        <p>Welcome to the official Anime blog.</p>
+                        <p>Welcome to the official Anime blog.</p>
                     </div>
                 </div>
             </div>
@@ -29,7 +29,7 @@ require_once './components/head.html.php';
                 <div class="col-lg-6">
                     <div class="login__form">
                         <h3>Sign In</h3>
-                        <form action="/auth/signin" method="post">
+                        <form action="" method="post">
                             <div class="input__item">
                                 <input name="email" type="text" placeholder="Email address">
                                 <span class="icon_mail"></span>
@@ -38,7 +38,7 @@ require_once './components/head.html.php';
                                 <input name="password" type="password" placeholder="Password">
                                 <span class="icon_lock"></span>
                             </div>
-                            <button name="submit" type="submit" class="site-btn">SignIn Now</button>
+                            <button name="getUser" type="submit" class="site-btn">SignIn Now</button>
                         </form>
                         <a href="#" class="forget_pass">Forgot Your Password?</a>
                     </div>

@@ -44,34 +44,38 @@ require_once './components/head.html.php';
                         </div>
 
                         <div class="row">
-                            <?php foreach ($followings as $show) : ?>
-                                <div class="col-sm-6 col-md-6 col-lg-4">
-                                    <div class="product__item">
-                                        <div class="product__item__pic set-bg" data-setbg="<?= $show['poster'] ?>">
-                                            <div class="ep">
-                                                <?= $show['numOfEpisodesAvail'] ?> /
-                                                <?= $show['totalEpisodes'] ?>
+                            <?php if (empty($followings)) : ?>
+                                <h3 class="text-white">No shows followed.</h3>
+                            <?php else : ?>
+                                <?php foreach ($followings as $show) : ?>
+                                    <div class="col-sm-6 col-md-6 col-lg-4">
+                                        <div class="product__item">
+                                            <div class="product__item__pic set-bg" data-setbg="<?= $show['poster'] ?>">
+                                                <div class="ep">
+                                                    <?= $show['numOfEpisodesAvail'] ?> /
+                                                    <?= $show['totalEpisodes'] ?>
+                                                </div>
+                                            </div>
+
+                                            <div class="product__item__text">
+                                                <ul>
+                                                    <?php
+                                                    $genres = explode(',', $show['genres']);
+
+                                                    foreach ($genres as $genre) {
+                                                        echo '<li>' . $genre . '</li>';
+                                                    }
+                                                    echo '<li>' . $show['type'] . '</li>'
+                                                    ?>
+                                                </ul>
+                                                <h5><a href="/anime-details?id=<?= $show['id'] ?>">
+                                                        <?= $show['title'] ?>
+                                                    </a></h5>
                                             </div>
                                         </div>
-
-                                        <div class="product__item__text">
-                                            <ul>
-                                                <?php
-                                                $genres = explode(',', $show['genres']);
-
-                                                foreach ($genres as $genre) {
-                                                    echo '<li>' . $genre . '</li>';
-                                                }
-                                                echo '<li>' . $show['type'] . '</li>'
-                                                ?>
-                                            </ul>
-                                            <h5><a href="/anime-details?id=<?= $show['id'] ?>">
-                                                    <?= $show['title'] ?>
-                                                </a></h5>
-                                        </div>
                                     </div>
-                                </div>
-                            <?php endforeach; ?>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>

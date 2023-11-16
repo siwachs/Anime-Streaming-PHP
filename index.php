@@ -32,21 +32,21 @@ switch ($path) {
         $homeController->index('Adventure', 'comedy');
         break;
     case '/genres':
-        $genresController = new GenresController(isset($_GET['name']) ? $_GET['name'] : 'All');
+        $genresController = new GenresController();
         $genresController->index();
         break;
     case '/auth/signup':
         $authController = AuthController::getInstance();
         if (isset($_SESSION['id'])) {
-            $authController->redirectTo('/');
+            header('Location: /');
         } else {
             $authController->signUp();
         }
         break;
     case '/auth/signin':
         $authController = AuthController::getInstance();
-        if (isset($_SESSION['email'])) {
-            $authController->redirectTo('/');
+        if (isset($_SESSION['id'])) {
+            header('Location: /');
         } else {
             $authController->signIn();
         }

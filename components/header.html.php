@@ -43,16 +43,15 @@
 
       <div class="col-lg-2">
         <div class="header__right">
-          <form action="/search" method="post" class="d-flex" role="search">
-            <input name="keyword" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button name="submit" style="color: #46392C; background-color: white; outline: none" class="btn btn-outline-success" type="submit">Search</button>
+          <form action="/search" method="post" class="d-flex my-2 my-lg-0">
+            <input name="keyword" class="form-control mr-sm-2 rounded-0 rounded-start-2" type="search" placeholder="Search" aria-label="Search">
+            <button name="submitKeyword" type="submit" class="btn btn-secondary rounded-0"><span class="icon_search"></span></button>
           </form>
 
           <?php if (!isset($_SESSION['email'])) : ?>
             <a href="/auth/signin"><span class="icon_profile"></span></a>
           <?php endif; ?>
         </div>
-
       </div>
     </div>
 

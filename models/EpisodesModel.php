@@ -8,6 +8,8 @@ require_once './Database.php';
 
 class EpisodesModel
 {
+    const ERROR_MESSAGE = 'There is a Error in Query';
+
     private static $instance;
     private $connection;
 
@@ -25,9 +27,9 @@ class EpisodesModel
         return self::$instance;
     }
 
-    public function getEpisode($showId, $epId)
+    public function getEpisodeById($showId, $epId)
     {
-        $queryString = 'SELECT * FROM episodes WHERE show_id = :showId AND id = :epId';
+        $queryString = 'SELECT episodes.id AS epId, episodes.show_id AS showId, episodes.video AS video, episodes.video_thumbnail AS thumbnail, episodes.title AS epTitle, shows.title AS showTitle, shows.genres AS genres FROM episodes LEFT JOIN shows ON shows.id = episodes.show_id WHERE episodes.show_id = :showId AND episodes.id = :epId';
         $select = $this->connection->prepare($queryString);
         try {
             $select->execute([
@@ -36,12 +38,11 @@ class EpisodesModel
             ]);
             return $select->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\Exception $e) {
-            echo 'There is a Error in Query';
-            return null;
+            echo EpisodesModel::ERROR_MESSAGE;
         }
     }
 
-    public function getEpisodes($showId)
+    public function getEpisodesById($showId)
     {
         $queryString = 'SELECT * FROM episodes WHERE show_id = :showId';
         $select = $this->connection->prepare($queryString);
@@ -51,8 +52,7 @@ class EpisodesModel
             ]);
             return $select->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\Exception $e) {
-            echo 'There is a Error in Query';
-            return null;
+            echo EpisodesModel::ERROR_MESSAGE;
         }
     }
 }

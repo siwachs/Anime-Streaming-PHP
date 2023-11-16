@@ -23,39 +23,13 @@ class AnimeDetailsController
         $this->commentsModel = CommentsModel::getInstance();
     }
 
-
-    private function timeAgo($time)
-    {
-        $time = strtotime($time);
-        $time_difference = time() - $time;
-
-        if ($time_difference < 1) {
-            return 'less than 1 second ago';
-        }
-
-        $condition = array(
-            12 * 30 * 24 * 60 * 60 =>  'year',
-            30 * 24 * 60 * 60       =>  'month',
-            24 * 60 * 60            =>  'day',
-            60 * 60                 =>  'hour',
-            60                      =>  'minute',
-            1                       =>  'second'
-        );
-
-        foreach ($condition as $secs => $str) {
-            $d = $time_difference / $secs;
-
-            if ($d >= 1) {
-                $t = round($d);
-                return 'about ' . $t . ' ' . $str . ($t > 1 ? 's' : '') . ' ago';
-            }
-        }
-    }
-
     public function index()
     {
         $genres = $this->genres;
-        $showArray = $this->showsModel->getShowById($_GET['id']);
+
+        if (isset($_GET['id'])) {
+            $showArray = $this->showsModel->getShowById($_GET['id']);
+        }
 
         if (empty($showArray)) {
             include_once './views/404.view.php';
@@ -80,10 +54,6 @@ class AnimeDetailsController
 
         if (isset($_SESSION['id']) && !$isViewed) {
             $this->showsModel->markAsViewed($_GET['id'], $_SESSION['id']);
-        }
-
-        foreach ($comments as &$comment) {
-            $comment['created_at'] = $this->timeAgo($comment['created_at']);
         }
 
         include_once './views/anime_details.view.php';

@@ -17,7 +17,7 @@ require_once './components/head.html.php';
                         <a href="/"><i class="fa fa-home"></i> Home</a>
                         <a href="/genres">Genres</a>
                         <span>
-                            <?= $genre ?>
+                            <?= isset($_GET['name']) ? $_GET['name'] : 'All' ?>
                         </span>
                     </div>
                 </div>
@@ -36,7 +36,7 @@ require_once './components/head.html.php';
                                 <div class="col-lg-8 col-md-8 col-sm-6">
                                     <div class="section-title">
                                         <h4>
-                                            <?= $genre ?>
+                                            <?= isset($_GET['name']) ? $_GET['name'] : 'All' ?>
                                         </h4>
                                     </div>
                                 </div>
@@ -45,36 +45,34 @@ require_once './components/head.html.php';
                         </div>
 
                         <div class="row">
-                            <?php foreach ($showsByGenre as $show): ?>
-                                <div class="col-sm-6 col-md-6 col-lg-4">
-                                    <div class="product__item">
-                                        <div class="product__item__pic set-bg" data-setbg="<?= $show['poster'] ?>">
-                                            <div class="ep">
-                                                <?= $show['numOfEpisodesAvail'] ?> /
-                                                <?= $show['totalEpisodes'] ?>
+                            <?php if (empty($showsByGenre)) : ?>
+                                <h3 class="text-white">No shows available.</h3>
+                            <?php else : ?>
+                                <?php foreach ($showsByGenre as $show) : ?>
+                                    <div class="col-sm-6 col-md-6 col-lg-4">
+                                        <div class="product__item">
+                                            <div class="product__item__pic set-bg" data-setbg="<?= $show['poster'] ?>">
+                                                <div class="ep">
+                                                    <?= $show['numOfEpisodesAvail'] ?> /
+                                                    <?= $show['totalEpisodes'] ?>
+                                                </div>
+                                                <div class="comment"><i class="fa fa-comments"></i> 0</div>
+                                                <div class="view"><i class="fa fa-eye"></i>
+                                                    <?= $show['numOfViews'] ?>
+                                                </div>
                                             </div>
-                                            <div class="comment"><i class="fa fa-comments"></i> 0</div>
-                                            <div class="view"><i class="fa fa-eye"></i>
-                                                <?= $show['numOfViews'] ?>
+                                            <div class="product__item__text">
+                                                <ul>
+                                                    <?= '<li>' . implode('</li><li>', array_map('trim', explode(',', $show['genres']))) . '</li>'; ?>
+                                                </ul>
+                                                <h5><a href="/anime-details?id=<?= $show['id'] ?>">
+                                                        <?= $show['title'] ?>
+                                                    </a></h5>
                                             </div>
-                                        </div>
-                                        <div class="product__item__text">
-                                            <ul>
-                                                <?php
-                                                $genres = explode(',', $show['genres']);
-
-                                                foreach ($genres as $genre) {
-                                                    echo '<li>' . $genre . '</li>';
-                                                }
-                                                ?>
-                                            </ul>
-                                            <h5><a href="/anime-details?id=<?= $show['id'] ?>">
-                                                    <?= $show['title'] ?>
-                                                </a></h5>
                                         </div>
                                     </div>
-                                </div>
-                            <?php endforeach; ?>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
 

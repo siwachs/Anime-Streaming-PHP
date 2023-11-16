@@ -10,6 +10,8 @@ use models\GenresModel;
 
 class AuthController
 {
+    const REDIRECT = 'Location: /';
+
     private static $instance;
     private $authModel;
     private $genres;
@@ -29,36 +31,41 @@ class AuthController
         return self::$instance;
     }
 
-    public function redirectTo($path)
-    {
-        header("Location: " . $path);
-    }
-
     public function signUp()
     {
-        if (isset($_POST['submit'])) {
+        if (isset($_POST['registerUser'])) {
             $username = trim($_POST['username']);
             $email = trim($_POST['email']);
             $password = trim($_POST['password']);
-            $confirmPassword = trim($_POST['confirm_password']);
+            $confirmPassword = trim($_POST['confirmPassword']);
 
             if (empty($username) || empty($email) || empty($password) || empty($confirmPassword) || $password !== $confirmPassword) {
-                echo '<script>alert("Validation Error.")</script>';
+                echo '<script>alert("One or more mandatory fields are missing.")</script>';
             } else {
-                $this->authModel->setAll($username, $email, $password);
-                $this->authModel->createUser();
-                $this->redirectTo('/auth/signin');
+                if (empty($this->authModel->isUserExist($email))) {
+                    $this->authModel->createUser($username, $email, $password);
+                    $user = $this->authModel->getUser($email, $password);
+                    if (empty($user)) {
+                        echo '<script>alert("Error in create user.")</script>';
+                    } else {
+                        $_SESSION['id'] = $user['id'];
+                        $_SESSION['username'] = $user['username'];
+                        $_SESSION['email'] = $user['email'];
+                        header(AuthController::REDIRECT);
+                    }
+                } else {
+                    echo '<script>alert("User already exist.")</script>';
+                }
             }
         }
 
         $genres = $this->genres;
-
         include_once './views/auth/signup.html.php';
     }
 
     public function signIn()
     {
-        if (isset($_POST['submit'])) {
+        if (isset($_POST['getUser'])) {
             $email = trim($_POST['email']);
             $password = trim($_POST['password']);
 
@@ -66,20 +73,19 @@ class AuthController
                 echo '<script>alert("Email or password are missing.")</script>';
             } else {
                 $user = $this->authModel->getUser($email, $password);
-
-                if (!$user) {
+                if (empty($user)) {
                     echo '<script>alert("Email or Password may be incorrect.")</script>';
+                    return;
                 } else {
                     $_SESSION['id'] = $user['id'];
                     $_SESSION['username'] = $user['username'];
                     $_SESSION['email'] = $user['email'];
-                    $this->redirectTo('/');
+                    header(AuthController::REDIRECT);
                 }
             }
         }
 
         $genres = $this->genres;
-
         include_once './views/auth/signin.html.php';
     }
 
@@ -87,6 +93,6 @@ class AuthController
     {
         session_unset();
         session_destroy();
-        $this->redirectTo('/');
+        header(AuthController::REDIRECT);
     }
 }

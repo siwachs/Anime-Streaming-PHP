@@ -9,57 +9,24 @@ require_once './Database.php';
 class AuthModel
 {
     private $connection;
-    private $username;
-    private $email;
-    private $password;
 
     public function __construct()
     {
         $this->connection = Database::getInstance()->getConnection();
     }
 
-    public function setAll($username, $email, $password)
-    {
-        $this->username = $username;
-        $this->email = $email;
-        $this->password = \password_hash($password, PASSWORD_DEFAULT);
-    }
-
-    public function getAll()
-    {
-        return [
-            'username' => $this->username,
-            'email' => $this->email,
-            'password' => $this->password
-        ];
-    }
-
-    public function setEmailAndPassword($email, $password)
-    {
-        $this->email = $email;
-        $this->password = \password_hash($password, PASSWORD_DEFAULT);
-    }
-
-    public function getEmailAndPassword()
-    {
-        return [
-            'email' => $this->email,
-            'password' => $this->password
-        ];
-    }
-
-    public function createUser()
+    public function createUser($username, $email, $password)
     {
         $insert = $this->connection->prepare('INSERT INTO users (username, email, password) VALUES (:username, :email, :password)');
 
         try {
             $insert->execute([
-                ':username' => $this->username,
-                ':email' => $this->email,
-                ':password' => $this->password
+                ':username' => $username,
+                ':email' => $email,
+                ':password' => password_hash($password, PASSWORD_DEFAULT),
             ]);
         } catch (\PDOException $e) {
-            echo "Error: " . $e->getMessage();
+            echo "There is a error in create user.";
         }
     }
 
@@ -72,14 +39,25 @@ class AuthModel
                 ':email' => $email
             ]);
             $user = $select->fetch(\PDO::FETCH_ASSOC);
-            if ($user && password_verify($password, $user['password'])) {
+            if (!empty($user) && password_verify($password, $user['password'])) {
                 return $user;
-            } else {
-                return null;
             }
         } catch (\PDOException $e) {
-            echo "Error: " . $e->getMessage();
-            return null;
+            echo "There is a error in get user.";
+        }
+    }
+
+    public function isUserExist($email)
+    {
+        $select = $this->connection->prepare('SELECT * from users where email=:email');
+
+        try {
+            $select->execute([
+                ':email' => $email
+            ]);
+            return $select->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo "There is a error in get user.";
         }
     }
 }

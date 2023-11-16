@@ -78,24 +78,24 @@ class CommentsModel
 
     public function getEpisodesComment($showId, $epId)
     {
-        $queryString = 'SELECT * FROM comments WHERE show_id = :showId AND ep_id = :epId';
+        $queryString = 'SELECT * FROM comments WHERE show_id = :showId AND ep_id = :epId ORDER BY created_at DESC';
         return $this->getComments($queryString, $showId, $epId);
     }
 
     public function insertComment($showId, $userId, $epId, $comment, $username)
     {
-        $queryString = 'INSERT INTO comments (show_id, ep_id, user_id, username, comment) VALUES (:show_id, :ep_id , :user_id, :username, :comment)';
+        $queryString = 'INSERT INTO comments (show_id, ep_id, user_id, username, comment) VALUES (:showId, :epId , :userId, :username, :comment)';
         $insert = $this->connection->prepare($queryString);
         try {
             $insert->execute([
-                ':show_id' => $showId,
-                'user_id' => $userId,
+                ':showId' => $showId,
+                'userId' => $userId,
                 ':comment' => $comment,
                 ':username' => $username,
-                ':ep_id' => $epId,
+                ':epId' => $epId,
             ]);
         } catch (\Exception $e) {
-            echo 'There is a Error in Query';
+            echo CommentsModel::ERROR_MESSAGE;
         }
     }
 }

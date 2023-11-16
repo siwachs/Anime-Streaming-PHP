@@ -16,8 +16,8 @@ require_once './components/head.html.php';
                     <div class="breadcrumb__links">
                         <a href="/"><i class="fa fa-home"></i> Home</a>
                         <a href="/genres">Genres</a>
-                        <a href="/genres?name=<?= explode(',', $show[0]['genres'])[0] ?>"><?= explode(',', $show[0]['genres'])[0] ?></a>
-                        <span><?= $show[0]['title'] ?></span>
+                        <a href="/genres?name=<?= explode(',', $episode['genres'])[0] ?>"><?= explode(',', $episode['genres'])[0] ?></a>
+                        <span><?= $episode['showTitle'] ?></span>
                     </div>
                 </div>
             </div>
@@ -31,8 +31,8 @@ require_once './components/head.html.php';
             <div class="row">
                 <div class="col-lg-12">
                     <div class="anime__video__player">
-                        <video id="player" playsinline controls data-poster="<?= $episode[0]['video_thumbnail'] ?>">
-                            <source src="<?= $episode[0]['video'] ?>" type="video/mp4" />
+                        <video id="player" playsinline controls data-poster="<?= $episode['thumbnail'] ?>">
+                            <source src="<?= $episode['video'] ?>" type="video/mp4" />
 
                             <track kind="captions" label="English captions" src="#" srclang="en" default />
                         </video>
@@ -59,7 +59,7 @@ require_once './components/head.html.php';
                             <?php foreach ($comments as $comment) : ?>
                                 <div class="anime__review__item">
                                     <div class="anime__review__item__pic">
-                                        <img src="assets/img/anime/review-1.jpg" alt="" />
+                                        <img src="https://i.pinimg.com/736x/0a/53/c3/0a53c3bbe2f56a1ddac34ea04a26be98.jpg" alt="" />
                                     </div>
                                     <div class="anime__review__item__text">
                                         <h6>
@@ -81,9 +81,9 @@ require_once './components/head.html.php';
                             <h5>Your Comment</h5>
                         </div>
 
-                        <form action="/anime-watching?id=<?= $_GET['id'] ?>&ep=<?= $_GET['ep'] ?>" method="post">
+                        <form action="" method="post">
                             <textarea name="comment" placeholder="Your Comment"></textarea>
-                            <button name="ep_comment" type="submit">
+                            <button name="submitComment" type="submit">
                                 <i class="fa fa-location-arrow"></i> Review
                             </button>
                         </form>

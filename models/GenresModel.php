@@ -8,6 +8,8 @@ require_once './Database.php';
 
 class GenresModel
 {
+    const ERROR_MESSAGE = 'There is a Error in Query';
+
     private static $instance;
     private $connection;
 
@@ -39,8 +41,7 @@ class GenresModel
             $select->execute();
             return $select->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\Exception $e) {
-            echo 'There is a Error in Query';
-            return null;
+            echo GenresModel::ERROR_MESSAGE;
         }
     }
 

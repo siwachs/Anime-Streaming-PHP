@@ -29,7 +29,7 @@ require_once './components/head.html.php';
                 <div class="col-md-12">
                     <div class="login__form">
                         <h3>Sign Up</h3>
-                        <form action="/auth/signup" method="post">
+                        <form action="" method="post">
                             <div class="input__item ">
                                 <input name="email" class="col-md-12" type="text" placeholder="Email address">
                                 <span class="icon_mail"></span>
@@ -43,12 +43,12 @@ require_once './components/head.html.php';
                                 <span class="icon_lock"></span>
                             </div>
                             <div class="input__item">
-                                <input name="confirm_password" type="password" placeholder="Conform Password">
+                                <input name="confirmPassword" type="password" placeholder="Conform Password">
                                 <span class="icon_lock"></span>
                             </div>
-                            <button type="submit" name="submit" class="site-btn">Signup Now</button>
+                            <button name="registerUser" type="submit" class="site-btn">Signup Now</button>
                         </form>
-                        <h5>Already have an account? <a href="/auth/signin">Sign In!</a></h5>
+                        <h5>Already have an account?<a href="/auth/signin">Sign In!</a></h5>
                     </div>
                 </div>
 
