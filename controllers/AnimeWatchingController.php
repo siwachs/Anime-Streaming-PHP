@@ -48,6 +48,6 @@ class AnimeWatchingController
             header('Location: /anime-watching?id=' . $_GET['id'] . '&ep=' . $_GET['ep']);
         }
 
-        include_once './views/anime_watching.view.php';
+        include_once './views/client/anime_watching.view.php';
     }
 }

@@ -26,7 +26,7 @@ class SearchController
         if (isset($_POST['submitKeyword']) && isset($_POST['keyword']) && !empty($_POST['keyword'])) {
             $result = $this->showsModel->getShowsByKeyword($_POST['keyword']);
 
-            include_once './views/search.view.php';
+            include_once './views/client/search.view.php';
         } else {
             header('Location: /');
         }

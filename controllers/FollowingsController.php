@@ -24,6 +24,6 @@ class FollowingsController
         $genres = $this->genres;
         $followings = $this->showsModel->getFollowings($_SESSION['id']);
 
-        include_once './views/followings.view.php';
+        include_once './views/client/followings.view.php';
     }
 }

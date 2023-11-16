@@ -56,6 +56,6 @@ class AnimeDetailsController
             $this->showsModel->markAsViewed($_GET['id'], $_SESSION['id']);
         }
 
-        include_once './views/anime_details.view.php';
+        include_once './views/client/anime_details.view.php';
     }
 }

@@ -8,6 +8,7 @@ require_once './controllers/AnimeDetailsController.php';
 require_once './controllers/AnimeWatchingController.php';
 require_once './controllers/FollowingsController.php';
 require_once './controllers/SearchController.php';
+require_once './controllers/AdminController.php';
 
 use controllers\HomeController;
 use controllers\GenresController;
@@ -16,6 +17,7 @@ use controllers\AnimeDetailsController;
 use controllers\AnimeWatchingController;
 use controllers\FollowingsController;
 use controllers\SearchController;
+use controllers\AdminController;
 
 $request_uri = $_SERVER['REQUEST_URI'];
 $parsed_url = parse_url($request_uri);
@@ -36,24 +38,21 @@ switch ($path) {
         $genresController->index();
         break;
     case '/auth/signup':
-        $authController = AuthController::getInstance();
         if (isset($_SESSION['id'])) {
             header('Location: /');
         } else {
-            $authController->signUp();
+            AuthController::getInstance()->signUp();
         }
         break;
     case '/auth/signin':
-        $authController = AuthController::getInstance();
         if (isset($_SESSION['id'])) {
             header('Location: /');
         } else {
-            $authController->signIn();
+            AuthController::getInstance()->signIn();
         }
         break;
     case '/auth/signout':
-        $authController = AuthController::getInstance();
-        $authController->signOut();
+        AuthController::getInstance()->signOut();
         break;
     case '/anime-details':
         $animeDetailsController = new AnimeDetailsController();
@@ -71,6 +70,22 @@ switch ($path) {
         $searchController = new SearchController();
         $searchController->index();
         break;
+    case '/admin':
+        AdminController::getInstance()->index();
+        break;
+    case '/admin/signin':
+        if (isset($_SESSION['adminId'])) {
+            header('Location: /admin');
+        } else {
+            AdminController::getInstance()->signIn();
+        }
+        break;
+    case '/admin/signout':
+        AdminController::getInstance()->signOut();
+        break;
+    case '/admin/list':
+        AdminController::getInstance()->adminList();
+        break;
     default:
-        include_once './views/404.view.php';
+        include_once './views/client/404.view.php';
 }

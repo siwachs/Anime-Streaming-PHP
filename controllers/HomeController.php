@@ -30,6 +30,6 @@ class HomeController
         $liveActionShows = $this->showsModel->getShowsByGenre('Live');
         $forYouSection = $this->showsModel->getShowsByGenre($forYouSectionKeyword);
 
-        include_once './views/home.view.php';
+        include_once './views/client/index.view.php';
     }
 }

@@ -60,7 +60,7 @@ class AuthController
         }
 
         $genres = $this->genres;
-        include_once './views/auth/signup.html.php';
+        include_once './views/client/auth/signup.html.php';
     }
 
     public function signIn()
@@ -75,7 +75,6 @@ class AuthController
                 $user = $this->authModel->getUser($email, $password);
                 if (empty($user)) {
                     echo '<script>alert("Email or Password may be incorrect.")</script>';
-                    return;
                 } else {
                     $_SESSION['id'] = $user['id'];
                     $_SESSION['username'] = $user['username'];
@@ -86,13 +85,14 @@ class AuthController
         }
 
         $genres = $this->genres;
-        include_once './views/auth/signin.html.php';
+        include_once './views/client/auth/signin.html.php';
     }
 
     public function signOut()
     {
-        session_unset();
-        session_destroy();
+        unset($_SESSION['id']);
+        unset($_SESSION['username']);
+        unset($_SESSION['email']);
         header(AuthController::REDIRECT);
     }
 }
