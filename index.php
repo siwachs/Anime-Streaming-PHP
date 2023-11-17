@@ -115,6 +115,13 @@ switch ($path) {
             AdminController::getInstance()->createShow();
         }
         break;
+    case '/admin/delete/show':
+        if (!isset($_SESSION['adminId'])) {
+            header('Location: /admin/signin');
+        } else {
+            AdminController::getInstance()->deleteShow();
+        }
+        break;
     default:
         include_once './views/client/404.view.php';
 }

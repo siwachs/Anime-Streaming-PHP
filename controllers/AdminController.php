@@ -10,7 +10,10 @@ use models\GenresModel;
 
 class AdminController
 {
+    const THUMBNAIL_DIR = 'assets/showsImages/thumbnails/';
+    const POSTER_DIR = 'assets/showsImages/posters/';
     const REDIRECT = 'Location: /admin';
+    const REDIRECT_SHOWS = 'Location: /admin/shows';
 
     private static $instance;
     private $adminModel;
@@ -104,8 +107,73 @@ class AdminController
 
     public function createShow()
     {
+        if (isset($_POST['createShow'])) {
+            $title = trim($_POST['title'] ?? '');
+            $description = trim($_POST['description'] ?? '');
+            $showType = trim($_POST['showType'] ?? '');
+            $studios = trim($_POST['studios'] ?? '');
+            $dateAired = trim($_POST['dateAired'] ?? '');
+            $status = trim($_POST['status'] ?? '');
+            $genresArray = $_POST['genresArray'] ?? [];
+            $duration = trim($_POST['duration'] ?? '');
+            $quality = trim($_POST['quality'] ?? '');
+            $numOfAvailEpisodes = $_POST['numOfAvailEpisodes'];
+            $numOfTotalEpisodes = $_POST['numOfTotalEpisodes'];
+
+            // Processing uploaded files
+            $thumbnail = $_FILES['thumbnail']['name'] ?? '';
+            $poster = $_FILES['poster']['name'] ?? '';
+
+            if (empty($title) || empty($description) || empty($showType) || empty($studios) || empty($dateAired) || empty($status) || empty($genresArray) || empty($duration) || empty($thumbnail) || empty($thumbnail) || empty($quality) || !is_numeric($numOfAvailEpisodes) || $numOfAvailEpisodes < 0 || !is_numeric($numOfTotalEpisodes) || $numOfTotalEpisodes < 0) {
+                echo "<script>alert('Validation Failed. All fields are required.')</script>";
+            } else {
+                $thumbnailDir = AdminController::THUMBNAIL_DIR . str_replace(' ', '_', $title) . '_' . basename($thumbnail);
+                $posterDir = AdminController::POSTER_DIR . str_replace(' ', '_', $title) . '_' . basename($poster);
+
+                $showData = [
+                    'title' => $title,
+                    'thumbnail' => '/' . $thumbnailDir,
+                    'poster' => '/' . $posterDir,
+                    'description' => $description,
+                    'showType' => $showType,
+                    'studios' => $studios,
+                    'dateAired' => $dateAired,
+                    'status' => $status,
+                    'genres' => implode(', ', $genresArray),
+                    'duration' => $duration,
+                    'quality' => $quality,
+                    'numOfAvailEpisodes' => $numOfAvailEpisodes,
+                    'numOfTotalEpisodes' => $numOfTotalEpisodes
+                ];
+
+                if (move_uploaded_file($_FILES['thumbnail']['tmp_name'], $thumbnailDir) && move_uploaded_file($_FILES['poster']['tmp_name'], $posterDir)) {
+                    $this->adminModel->insertShow($showData);
+                    header(AdminController::REDIRECT_SHOWS);
+                }
+            }
+        }
+
         $genres = $this->genresModel->getAllGenres();
 
         include_once './views/admin/create_show.view.php';
+    }
+
+    public function deleteShow()
+    {
+        if (isset($_GET['id'])) {
+            $showImages = $this->adminModel->getImagesLink($_GET['id']);
+
+            if (empty($showImages)) {
+                header(AdminController::REDIRECT_SHOWS);
+            } else {
+                unlink(substr($showImages['thumbanil'], 1));
+                unlink(substr($showImages['poster'], 1));
+
+                $this->adminModel->deleteShow($_GET['id']);
+                header(AdminController::REDIRECT_SHOWS);
+            }
+        } else {
+            header(AdminController::REDIRECT_SHOWS);
+        }
     }
 }

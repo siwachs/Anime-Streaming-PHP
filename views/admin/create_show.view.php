@@ -13,6 +13,7 @@ include_once './components/admin/head.html.php';
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title mb-5 d-inline">Create Show</h5>
+
                             <form method="POST" action="" enctype="multipart/form-data">
                                 <div class="form-outline mb-4 mt-4">
                                     <label for="title" class="form-label">Title</label>
@@ -21,12 +22,12 @@ include_once './components/admin/head.html.php';
 
                                 <div class="form-outline mb-4 mt-4">
                                     <label for="thumbnail" class="form-label">Thumbnail</label>
-                                    <input type="file" name="image" id="thumbnail" class="form-control" />
+                                    <input type="file" name="thumbnail" id="thumbnail" class="form-control" />
                                 </div>
 
                                 <div class="form-outline mb-4 mt-4">
                                     <label for="poster" class="form-label">Poster</label>
-                                    <input type="file" name="image" id="poster" class="form-control" />
+                                    <input type="file" name="poster" id="poster" class="form-control" />
                                 </div>
 
                                 <div class="form-group">
@@ -62,7 +63,7 @@ include_once './components/admin/head.html.php';
 
                                 <div class="form-outline mb-4 mt-4">
                                     <label for="genres" class="form-label">Genres</label>
-                                    <select name="genresArray" id="genres" class="form-select form-control" multiple>
+                                    <select name="genresArray[]" id="genres" class="form-select form-control" multiple>
                                         <?php foreach ($genres as $genre) : ?>
                                             <option value="<?= $genre['name'] ?>">
                                                 <?= $genre['name'] ?>
@@ -73,24 +74,25 @@ include_once './components/admin/head.html.php';
 
 
                                 <div class="form-outline mb-4 mt-4">
-                                    <input type="text" name="duration" id="form2Example1" class="form-control" placeholder="duration" />
+                                    <label for="duration" class="form-label">Duration</label>
+                                    <input type="text" name="duration" id="duration" class="form-control" placeholder="Duration" />
                                 </div>
 
                                 <div class="form-outline mb-4 mt-4">
-                                    <input type="text" name="quality" id="form2Example1" class="form-control" placeholder="quality" />
+                                    <label for="quality" class="form-label">Quality</label>
+                                    <input type="text" name="quality" id="quality" class="form-control" placeholder="Quality" />
                                 </div>
 
                                 <div class="form-outline mb-4 mt-4">
-                                    <input type="text" name="num_available" id="form2Example1" class="form-control" placeholder="num_available" />
+                                    <label for="num_available" class="form-label">Number of Available Episodes</label>
+                                    <input min="0" value="0" type="number" name="numOfAvailEpisodes" id="num_available" class="form-control" placeholder="Number Available" />
                                 </div>
 
                                 <div class="form-outline mb-4 mt-4">
-                                    <input type="text" name="num_total" id="form2Example1" class="form-control" placeholder="num_total" />
+                                    <label for="num_total" class="form-label">Total Number of Episodes</label>
+                                    <input min="0" value="0" type="number" name="numOfTotalEpisodes" id="num_total" class="form-control" placeholder="Total Number" />
                                 </div>
 
-                                <br />
-
-                                <!-- Submit button -->
                                 <button type="submit" name="createShow" class="btn btn-primary mb-4 text-center">
                                     Create
                                 </button>

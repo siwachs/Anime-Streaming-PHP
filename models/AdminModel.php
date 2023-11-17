@@ -91,13 +91,65 @@ class AdminModel
 
     public function getShows()
     {
-        $select = $this->connection->prepare('SELECT shows.id AS id, shows.title AS title, shows.thumbnail_image AS thumbanil, shows.poster_image AS poster, shows.type AS type, shows.date_aired AS dateAired, shows.status AS status, shows.genres AS genres, shows.num_of_episodes_avail AS numOfEpisodesAvail, shows.total_num_of_episodes AS totalEpisodes, shows.created_at AS createdAt FROM shows');
+        $select = $this->connection->prepare('SELECT shows.id AS id, shows.title AS title, shows.thumbnail_image AS thumbanil, shows.poster_image AS poster, shows.type AS type, shows.date_aired AS dateAired, shows.status AS status, shows.genres AS genres, shows.num_of_episodes_avail AS numOfEpisodesAvail, shows.total_num_of_episodes AS totalEpisodes, shows.created_at AS createdAt FROM shows ORDER BY created_at DESC');
 
         try {
             $select->execute();
             return $select->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
             echo "There is a error in get shows.";
+        }
+    }
+
+    public function insertShow($showData)
+    {
+        try {
+            $insert = $this->connection->prepare('INSERT INTO shows(title, thumbnail_image, poster_image, description, type, studios, date_aired, status, genres, duration, quality,  num_of_episodes_avail, total_num_of_episodes) VALUES (:title, :thumbnail, :poster, :description, :showType, :studios, :dateAired, :status, :genres, :duration, :quality,  :numOfAvailEpisodes, :numOfTotalEpisodes)');
+
+            $insert->bindParam(':title', $showData['title']);
+            $insert->bindParam(':thumbnail', $showData['thumbnail']);
+            $insert->bindParam(':poster', $showData['poster']);
+            $insert->bindParam(':description', $showData['description']);
+            $insert->bindParam(':showType', $showData['showType']);
+            $insert->bindParam(':studios', $showData['studios']);
+            $insert->bindParam(':dateAired', $showData['dateAired']);
+            $insert->bindParam(':status', $showData['status']);
+            $insert->bindParam(':genres', $showData['genres']);
+            $insert->bindParam(':duration', $showData['duration']);
+            $insert->bindParam(':quality', $showData['quality']);
+            $insert->bindParam(':numOfAvailEpisodes', $showData['numOfAvailEpisodes']);
+            $insert->bindParam(':numOfTotalEpisodes', $showData['numOfTotalEpisodes']);
+
+            $insert->execute();
+        } catch (\PDOException $e) {
+            echo "There is an error in inserting the show.";
+        }
+    }
+
+    public function getImagesLink($showId)
+    {
+        $select = $this->connection->prepare('SELECT shows.thumbnail_image AS thumbanil, shows.poster_image AS poster FROM shows WHERE id= :id');
+
+        try {
+            $select->execute([
+                ':id' => $showId
+            ]);
+            return $select->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo "There is a error in get shows.";
+        }
+    }
+
+    public function deleteShow($showId)
+    {
+        $delete = $this->connection->prepare('DELETE FROM shows WHERE id= :id');
+
+        try {
+            $delete->execute([
+                ':id' => $showId
+            ]);
+        } catch (\PDOException $e) {
+            echo "There is a error in deleting a show.";
         }
     }
 }
