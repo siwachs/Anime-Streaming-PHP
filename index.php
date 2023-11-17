@@ -71,7 +71,11 @@ switch ($path) {
         $searchController->index();
         break;
     case '/admin':
-        AdminController::getInstance()->index();
+        if (!isset($_SESSION['adminId'])) {
+            header('Location: /admin/signin');
+        } else {
+            AdminController::getInstance()->index();
+        }
         break;
     case '/admin/signin':
         if (isset($_SESSION['adminId'])) {
@@ -84,7 +88,32 @@ switch ($path) {
         AdminController::getInstance()->signOut();
         break;
     case '/admin/list':
-        AdminController::getInstance()->adminList();
+        if (!isset($_SESSION['adminId'])) {
+            header('Location: /admin/signin');
+        } else {
+            AdminController::getInstance()->adminList();
+        }
+        break;
+    case '/admin/create-admin':
+        if (!isset($_SESSION['adminId'])) {
+            header('Location: /admin/signin');
+        } else {
+            AdminController::getInstance()->createAdmin();
+        }
+        break;
+    case '/admin/shows':
+        if (!isset($_SESSION['adminId'])) {
+            header('Location: /admin/signin');
+        } else {
+            AdminController::getInstance()->showsList();
+        }
+        break;
+    case '/admin/create-show':
+        if (!isset($_SESSION['adminId'])) {
+            header('Location: /admin/signin');
+        } else {
+            AdminController::getInstance()->createShow();
+        }
         break;
     default:
         include_once './views/client/404.view.php';

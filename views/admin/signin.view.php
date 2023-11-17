@@ -39,3 +39,5 @@ include_once './components/admin/head.html.php';
   <?php
   include_once './components/admin/scripts.php'; ?>
 </body>
+
+</html>

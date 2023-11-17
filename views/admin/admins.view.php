@@ -13,21 +13,24 @@ include_once './components/admin/head.html.php';
           <div class="card">
             <div class="card-body">
               <h5 class="card-title mb-4 d-inline">Admins</h5>
-              <a href="create-admins.html" class="btn btn-primary mb-4 text-center float-right">Create Admins</a>
+              <a href="/admin/create-admin" class="btn btn-primary mb-4 text-center ms-3">Create Admins</a>
               <table class="table">
+                <caption>List of Admins</caption>
                 <thead>
                   <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">username</th>
-                    <th scope="col">email</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                  </tr>
+                  <?php foreach ($admins as $admin) : ?>
+                    <tr>
+                      <th scope="row"><?= $admin['id'] ?></th>
+                      <td><?= $admin['adminname'] ?></td>
+                      <td><?= $admin['email'] ?></td>
+                    </tr>
+                  <?php endforeach; ?>
                 </tbody>
               </table>
             </div>
@@ -40,3 +43,5 @@ include_once './components/admin/head.html.php';
   <?php
   include_once './components/admin/scripts.php'; ?>
 </body>
+
+</html>

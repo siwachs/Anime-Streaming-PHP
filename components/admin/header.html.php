@@ -18,10 +18,10 @@
 
                 <?php if (isset($_SESSION['adminId'])) : ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="admins/admins.html" style="margin-left: 20px">Admins</a>
+                        <a class="nav-link" href="/admin/list" style="margin-left: 20px">Admins</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="shows-admins/show-shows.html" style="margin-left: 20px">Shows</a>
+                        <a class="nav-link" href="/admin/shows" style="margin-left: 20px">Shows</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="genres-admins/show-genres.html" style="margin-left: 20px">Genres</a>

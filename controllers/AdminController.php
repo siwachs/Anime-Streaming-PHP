@@ -3,8 +3,10 @@
 namespace controllers;
 
 require_once './models/AdminModel.php';
+require_once './models/GenresModel.php';
 
 use models\AdminModel;
+use models\GenresModel;
 
 class AdminController
 {
@@ -12,10 +14,12 @@ class AdminController
 
     private static $instance;
     private $adminModel;
+    private $genresModel;
 
     public function __construct()
     {
         $this->adminModel = new AdminModel();
+        $this->genresModel = GenresModel::getInstance();
     }
 
     public static function getInstance()
@@ -29,6 +33,8 @@ class AdminController
 
     public function index()
     {
+        $stats = $this->adminModel->getStats();
+
         include_once './views/admin/index.view.php';
     }
 
@@ -66,6 +72,40 @@ class AdminController
 
     public function adminList()
     {
+        $admins = $this->adminModel->getAdmins();
+
         include_once './views/admin/admins.view.php';
+    }
+
+    public function createAdmin()
+    {
+        if (isset($_POST['createAdmin'])) {
+            $adminname = trim($_POST['adminname']);
+            $email = trim($_POST['email']);
+            $password = trim($_POST['password']);
+
+            if (empty($email) || empty($password) || empty($adminname)) {
+                echo '<script>alert("Adminname, Email or password are missing.")</script>';
+            } else {
+                $this->adminModel->createAdmin($adminname, $email, $password);
+                header('Location: /admin/list');
+            }
+        }
+
+        include_once './views/admin/create_admin.view.php';
+    }
+
+    public function showsList()
+    {
+        $shows = $this->adminModel->getShows();
+
+        include_once './views/admin/shows.view.php';
+    }
+
+    public function createShow()
+    {
+        $genres = $this->genresModel->getAllGenres();
+
+        include_once './views/admin/create_show.view.php';
     }
 }
