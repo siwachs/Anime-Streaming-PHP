@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 18, 2023 at 10:04 AM
+-- Generation Time: Nov 18, 2023 at 01:05 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -93,8 +93,7 @@ CREATE TABLE `episodes` (
 
 INSERT INTO `episodes` (`id`, `show_id`, `video`, `video_thumbnail`, `title`, `created_at`) VALUES
 (7, 1, '/assets/showsEpisodes/The_iDOLM@STER_Million_Live!/episodes/1.mp4', '/assets/showsEpisodes/The_iDOLM@STER_Million_Live!/thumbnails/anime-watch.jpg', 'Ep 01', '2023-11-18 08:49:33'),
-(8, 1, '/assets/showsEpisodes/The_iDOLM@STER_Million_Live!/episodes/2.mp4', '/assets/showsEpisodes/The_iDOLM@STER_Million_Live!/thumbnails/anime-watch.jpg', 'Ep 02', '2023-11-18 08:49:56'),
-(10, 6, '/assets/showsEpisodes/Better_Call_Saul/episodes/2.mp4', '/assets/showsEpisodes/Better_Call_Saul/thumbnails/anime-watch.jpg', 'Ep 00', '2023-11-18 08:59:22');
+(8, 1, '/assets/showsEpisodes/The_iDOLM@STER_Million_Live!/episodes/2.mp4', '/assets/showsEpisodes/The_iDOLM@STER_Million_Live!/thumbnails/anime-watch.jpg', 'Ep 02', '2023-11-18 08:49:56');
 
 -- --------------------------------------------------------
 
@@ -114,7 +113,8 @@ CREATE TABLE `followings` (
 --
 
 INSERT INTO `followings` (`id`, `show_id`, `user_id`, `created_at`) VALUES
-(28, 5, 1, '2023-11-16 07:31:51');
+(28, 5, 1, '2023-11-16 07:31:51'),
+(29, 1, 1, '2023-11-18 09:33:38');
 
 -- --------------------------------------------------------
 
@@ -174,7 +174,8 @@ INSERT INTO `reviews` (`id`, `show_id`, `user_id`, `comment`, `username`, `creat
 (6, 2, 1, 'Place another', 'username', '2023-11-14 04:08:32'),
 (7, 2, 1, 'comment...\r\n', 'username', '2023-11-14 04:12:21'),
 (8, 1, 1, 'Comment made', 'username', '2023-11-15 08:59:57'),
-(9, 5, 1, 'Test', 'username', '2023-11-15 10:00:11');
+(9, 5, 1, 'Test', 'username', '2023-11-15 10:00:11'),
+(10, 10, 1, 'Tets', 'username', '2023-11-18 09:53:28');
 
 -- --------------------------------------------------------
 
@@ -253,7 +254,10 @@ CREATE TABLE `views` (
 
 INSERT INTO `views` (`id`, `show_id`, `user_id`, `created_at`) VALUES
 (54, 1, 1, '2023-11-15 08:41:27'),
-(55, 5, 1, '2023-11-15 08:41:39');
+(55, 5, 1, '2023-11-15 08:41:39'),
+(57, 5, 1, '2023-11-18 09:53:12'),
+(58, 1, 1, '2023-11-18 09:53:16'),
+(59, 1, 1, '2023-11-18 10:00:52');
 
 --
 -- Indexes for dumped tables
@@ -339,7 +343,7 @@ ALTER TABLE `episodes`
 -- AUTO_INCREMENT for table `followings`
 --
 ALTER TABLE `followings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `genres`
@@ -351,7 +355,7 @@ ALTER TABLE `genres`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `shows`
@@ -369,7 +373,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `views`
 --
 ALTER TABLE `views`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
