@@ -35,7 +35,7 @@ require_once './components/head.html.php';
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="anime__details__pic set-bg" data-setbg="<?= $show['poster'] ?>">
-                            <div class="comment"><i class="fa fa-comments"></i>0</div>
+                            <div class="comment"><i class="fa fa-comments"></i><?= $show['numOfReviews'] ?></div>
                             <div class="view"><i class="fa fa-eye"></i>
                                 <?= $show['numOfViews'] ?>
                             </div>

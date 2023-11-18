@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2023 at 04:43 PM
+-- Generation Time: Nov 18, 2023 at 10:04 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -20,6 +20,29 @@ SET time_zone = "+00:00";
 --
 -- Database: `anime_streaming`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admins`
+--
+
+CREATE TABLE `admins` (
+  `id` int(11) NOT NULL,
+  `email` varchar(200) NOT NULL,
+  `adminname` varchar(200) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `admins`
+--
+
+INSERT INTO `admins` (`id`, `email`, `adminname`, `password`, `created_at`) VALUES
+(1, 'admin@gmail.com', 'admin', '$2y$10$C5tgi9j.Oj/awAYUbXmAl.2dvHSjFQjUvmzdlDFqMb3JoXLI5v.vy', '2023-11-16 12:51:41'),
+(2, 'admin_clone@gmail.com', 'admin', '$2y$10$C5tgi9j.Oj/awAYUbXmAl.2dvHSjFQjUvmzdlDFqMb3JoXLI5v.vy', '2023-11-16 12:51:41'),
+(3, 'new.admin@gmail.com', 'admin user', '$2y$10$IVw/QnrqRw6QYRYJYHtNMe6BwgKtEtOqCk04IysdUg3zmpodAB48u', '2023-11-17 05:46:03');
 
 -- --------------------------------------------------------
 
@@ -45,7 +68,9 @@ INSERT INTO `comments` (`id`, `show_id`, `ep_id`, `user_id`, `username`, `commen
 (1, 1, 1, 1, 'user', 'Comment inserted...', '2023-11-14 09:05:08'),
 (2, 1, 1, 1, 'user', 'Second comment...', '2023-11-14 09:05:08'),
 (6, 1, 2, 1, 'username', 'comments', '2023-11-14 09:30:54'),
-(7, 1, 1, 1, 'username', 'new', '2023-11-14 09:31:06');
+(7, 1, 1, 1, 'username', 'new', '2023-11-14 09:31:06'),
+(8, 1, 3, 1, 'username', 'comment', '2023-11-16 08:07:30'),
+(9, 1, 3, 1, 'username', 'new coomet add', '2023-11-16 08:07:43');
 
 -- --------------------------------------------------------
 
@@ -67,9 +92,9 @@ CREATE TABLE `episodes` (
 --
 
 INSERT INTO `episodes` (`id`, `show_id`, `video`, `video_thumbnail`, `title`, `created_at`) VALUES
-(1, 1, '/assets/videos/1.mp4', '/assets/videos/anime-watch.jpg', 'Ep 01', '2023-11-14 04:58:03'),
-(2, 1, '/assets/videos/2.mp4', '/assets/videos/anime-watch.jpg', 'Ep 02', '2023-11-14 04:58:03'),
-(3, 1, '/assets/videos/1.mp4', '/assets/videos/anime-watch.jpg', 'Ep 03', '2023-11-14 04:58:03');
+(7, 1, '/assets/showsEpisodes/The_iDOLM@STER_Million_Live!/episodes/1.mp4', '/assets/showsEpisodes/The_iDOLM@STER_Million_Live!/thumbnails/anime-watch.jpg', 'Ep 01', '2023-11-18 08:49:33'),
+(8, 1, '/assets/showsEpisodes/The_iDOLM@STER_Million_Live!/episodes/2.mp4', '/assets/showsEpisodes/The_iDOLM@STER_Million_Live!/thumbnails/anime-watch.jpg', 'Ep 02', '2023-11-18 08:49:56'),
+(10, 6, '/assets/showsEpisodes/Better_Call_Saul/episodes/2.mp4', '/assets/showsEpisodes/Better_Call_Saul/thumbnails/anime-watch.jpg', 'Ep 00', '2023-11-18 08:59:22');
 
 -- --------------------------------------------------------
 
@@ -89,10 +114,7 @@ CREATE TABLE `followings` (
 --
 
 INSERT INTO `followings` (`id`, `show_id`, `user_id`, `created_at`) VALUES
-(8, 1, 1, '2023-11-13 16:50:03'),
-(9, 2, 1, '2023-11-13 16:57:20'),
-(10, 5, 1, '2023-11-13 16:57:35'),
-(13, 3, 2, '2023-11-14 14:15:42');
+(28, 5, 1, '2023-11-16 07:31:51');
 
 -- --------------------------------------------------------
 
@@ -122,8 +144,7 @@ INSERT INTO `genres` (`id`, `name`, `created_at`) VALUES
 (9, 'Shounen', '2023-11-12 04:13:05'),
 (10, 'Childcare', '2023-11-12 04:13:05'),
 (11, 'Comedy', '2023-11-12 04:13:05'),
-(12, 'Horrer', '2023-11-12 04:13:05'),
-(13, 'Fantasy', '2023-11-12 04:13:05');
+(12, 'Horrer', '2023-11-12 04:13:05');
 
 -- --------------------------------------------------------
 
@@ -151,7 +172,9 @@ INSERT INTO `reviews` (`id`, `show_id`, `user_id`, `comment`, `username`, `creat
 (4, 1, 1, 'If you thought daydreaming was just a pastime, think again! The iDOLM@STER Million Live! is the masterclass in turning dreams into reality, where every note sung and every step danced is a step closer to the ethereal realm of idol stardom!', 'user', '2023-11-13 13:43:30'),
 (5, 2, 1, 'make comment', 'username', '2023-11-14 04:08:18'),
 (6, 2, 1, 'Place another', 'username', '2023-11-14 04:08:32'),
-(7, 2, 1, 'comment...\r\n', 'username', '2023-11-14 04:12:21');
+(7, 2, 1, 'comment...\r\n', 'username', '2023-11-14 04:12:21'),
+(8, 1, 1, 'Comment made', 'username', '2023-11-15 08:59:57'),
+(9, 5, 1, 'Test', 'username', '2023-11-15 10:00:11');
 
 -- --------------------------------------------------------
 
@@ -172,8 +195,8 @@ CREATE TABLE `shows` (
   `status` varchar(100) NOT NULL,
   `duration` varchar(200) NOT NULL,
   `quality` varchar(200) NOT NULL,
-  `num_of_episodes_avail` int(11) NOT NULL,
-  `total_num_of_episodes` int(11) NOT NULL,
+  `num_of_episodes_avail` int(11) NOT NULL DEFAULT 0,
+  `total_num_of_episodes` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -187,7 +210,8 @@ INSERT INTO `shows` (`id`, `title`, `thumbnail_image`, `poster_image`, `descript
 (3, 'Kage no Jitsuryokusha ni Naritakute! 2nd Season', 'https://i0.wp.com/www.animegeek.com/wp-content/uploads/2022/12/The-Eminence-in-Shadow-Season-2-release-date-Kage-no-Jitsuryokusha-ni-Naritakute-Season-2-Anime.jpg?fit=1200%2C675&ssl=1', 'https://gogoanime.dev/images/6539edc7a5477e0015365e3c.png', 'Everything has been going according to plan, but the hour of awakening draws near. Cid Kageno and Shadow Garden investigate the Lawless City, a cesspool where the red moon hangs low in the sky and three powerful monarchs rule the streets. The true draw for Cid, however, is one who can draw blood–the Blood Queen, a vampire who has slumbered in her coffin for eons. Her awakening approaches, and Cid could finally face a day of reckoning.', 'TV', 'Action, Comedy, Fantasy, Isekai, Reincarnation', 'Mapa', '2023', 'completed', '24 min/ep', 'FHD', 12, 12, '2023-11-12 03:39:56'),
 (4, 'Spy x Family Season 2', 'https://www.nme.com/wp-content/uploads/2022/08/spyxfamily-part-2@2000x1270.jpg', 'https://gogoanime.dev/images/6517fb17fea3670015125b4c.png', 'Second season of Spy x Family.', 'TV', 'Action, Childcare, Comedy, Shounen', 'Mapa', '2023', 'Ongoing', '24 ep/min', 'FHD', 12, 4, '2023-11-12 03:45:00'),
 (5, 'Dr. Stone: New World Part 2', 'https://mangathrill.com/wp-content/uploads/2020/09/pjimage-87.jpg', 'https://gogoanime.dev/images/65179208fea3670015121a3d.png', 'Dr.STONE NEW WORLD , Dr. Stone 3rd Season Part 2', 'TV', 'Adventure, Comedy, Sci-Fi, Shounen, Time Travel', 'Mapa', '2023', 'Ongoing', '13 min/ep', 'HD', 12, 5, '2023-11-12 03:45:00'),
-(6, 'Better Call Saul', 'https://themoviesbio.com/wp-content/uploads/2019/12/Better-Call-Saul-Season-4-Release-Date-And-Cast.png', 'https://image.tmdb.org/t/p/original/n6orZzLiG2aj4xz7kSISZHO7Flf.jpg', 'The trials and tribulations of criminal lawyer Jimmy McGill in the years leading up to his fateful run-in with Walter White and Jesse Pinkman.', 'TV', 'Live, Drama, Crime', 'Netflix', '2006 - 2007', 'Completed', '56 min/ep', 'FHD', 12, 12, '2023-11-12 04:09:46');
+(6, 'Better Call Saul', 'https://themoviesbio.com/wp-content/uploads/2019/12/Better-Call-Saul-Season-4-Release-Date-And-Cast.png', 'https://image.tmdb.org/t/p/original/n6orZzLiG2aj4xz7kSISZHO7Flf.jpg', 'The trials and tribulations of criminal lawyer Jimmy McGill in the years leading up to his fateful run-in with Walter White and Jesse Pinkman.', 'TV', 'Live, Drama, Crime', 'Netflix', '2006 - 2007', 'Completed', '56 min/ep', 'FHD', 12, 12, '2023-11-12 04:09:46'),
+(10, 'JJK', '/assets/showsImages/thumbnails/JJK_thumb.avif', '/assets/showsImages/posters/JJK_poster.jpg', 'The story of Jujutsu Kaisen is set in a world where Cursed Spirits feed on unsuspecting humans and fragments of the legendary and feared demon Ryomen Sukuna have been lost and scattered about.\r\n\r\nShould any curse consume Sukuna\'s body parts, the power they gain could destroy the world as we know it. Fortunately, there exists a mysterious school of Jujutsu Sorcerers who exist to protect the precarious existence of the living from the supernatural!', 'Tv Series', 'Crime, Adventure, Sci-Fi, Martial Arts, Shounen, Horrer', 'JJK', 'Now', 'Ongoing', '24 min/ep', 'Blue Ray', 21, 24, '2023-11-17 17:02:00');
 
 -- --------------------------------------------------------
 
@@ -208,8 +232,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `created_at`) VALUES
-(1, 'username', 'email@gmail.com', '$2y$10$C5tgi9j.Oj/awAYUbXmAl.2dvHSjFQjUvmzdlDFqMb3JoXLI5v.vy', '2023-11-12 04:14:02'),
-(2, 'username', 'new@gmail.com', '$2y$10$ID30g1HKW3ppFVQsxLCTe.vn8dJzP9F615UJaohrkMUL9MAZ4enA2', '2023-11-14 14:14:50');
+(1, 'username', 'email@gmail.com', '$2y$10$C5tgi9j.Oj/awAYUbXmAl.2dvHSjFQjUvmzdlDFqMb3JoXLI5v.vy', '2023-11-12 04:14:02');
 
 -- --------------------------------------------------------
 
@@ -229,17 +252,18 @@ CREATE TABLE `views` (
 --
 
 INSERT INTO `views` (`id`, `show_id`, `user_id`, `created_at`) VALUES
-(47, 5, 1, '2023-11-14 14:12:24'),
-(48, 6, 1, '2023-11-14 14:12:37'),
-(49, 2, 1, '2023-11-14 14:12:44'),
-(50, 3, 1, '2023-11-14 14:12:49'),
-(51, 5, 2, '2023-11-14 14:15:33'),
-(52, 3, 2, '2023-11-14 14:15:38'),
-(53, 1, 2, '2023-11-14 14:15:56');
+(54, 1, 1, '2023-11-15 08:41:27'),
+(55, 5, 1, '2023-11-15 08:41:39');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `admins`
+--
+ALTER TABLE `admins`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `comments`
@@ -294,52 +318,58 @@ ALTER TABLE `views`
 --
 
 --
+-- AUTO_INCREMENT for table `admins`
+--
+ALTER TABLE `admins`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `episodes`
 --
 ALTER TABLE `episodes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `followings`
 --
 ALTER TABLE `followings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `genres`
 --
 ALTER TABLE `genres`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `shows`
 --
 ALTER TABLE `shows`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `views`
 --
 ALTER TABLE `views`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

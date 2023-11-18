@@ -28,30 +28,32 @@ class AnimeDetailsController
         $genres = $this->genres;
 
         if (isset($_GET['id'])) {
-            $showArray = $this->showsModel->getShowById($_GET['id']);
+            $show = $this->showsModel->getShowById($_GET['id']);
         }
 
-        if (empty($showArray)) {
+        if (empty($show)) {
             include_once './views/404.view.php';
             return;
         }
 
+        $youMightLike = $this->showsModel->getShowsByGenre($show['genres']);
+        $comments = $this->commentsModel->getReviewsByShowId($_GET['id']);
+        $isFollowed = isset($_SESSION['id']) ? empty($this->showsModel->isShowFollowed($_GET['id'], $_SESSION['id'])) > 0 : false;
+
+        // Follow A Show
         if (isset($_SESSION['id']) && isset($_POST['followShow']) && isset($_POST['showId']) && isset($_POST['userId'])) {
             $this->showsModel->followShow($_GET['id'], $_SESSION['id']);
             header('Location: /anime-details?id=' . $_GET['id']);
         }
 
+        // Add Review For A Show
         if (isset($_SESSION['id']) && isset($_POST['submitComment']) && isset($_POST['comment'])) {
             $this->commentsModel->insertReview($_GET['id'], $_SESSION['id'], $_POST['comment'], $_SESSION['username']);
             header('Location: /anime-details?id=' . $_GET['id']);
         }
 
-        $show = $showArray[0];
-        $youMightLike = $this->showsModel->getShowsByGenre($show['genres']);
-        $comments = $this->commentsModel->getReviewsByShowId($_GET['id']);
-        $isFollowed = isset($_SESSION['id']) ? count($this->showsModel->isShowFollowed($_GET['id'], $_SESSION['id'])) > 0 : false;
-        $isViewed = isset($_SESSION['id']) ? count($this->showsModel->isViewed($_GET['id'], $_SESSION['id'])) > 0 : false;
-
+        // Check if you already view show if not mark as view.
+        $isViewed = isset($_SESSION['id']) ? empty($this->showsModel->isViewed($_GET['id'], $_SESSION['id'])) > 0 : false;
         if (isset($_SESSION['id']) && !$isViewed) {
             $this->showsModel->markAsViewed($_GET['id'], $_SESSION['id']);
         }

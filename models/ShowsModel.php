@@ -9,6 +9,8 @@ require_once './Database.php';
 class ShowsModel
 {
     const ERROR_MESSAGE = 'There is a Error in Query';
+    const BIND_SHOW_ID = ':showId';
+    const BIND_USER_ID = ':userId';
 
     private static $instance;
     private $connection;
@@ -54,32 +56,32 @@ class ShowsModel
 
     public function getTrendingShows($limit = null)
     {
-        $queryString = 'SELECT shows.id AS id, shows.poster_image AS poster, shows.title as title, shows.num_of_episodes_avail AS numOfEpisodesAvail, shows.total_num_of_episodes AS totalEpisodes, shows.genres AS genres, COUNT(views.show_id) AS numOfViews FROM shows JOIN views ON shows.id = views.show_id GROUP BY(shows.id) ORDER BY numOfViews DESC';
+        $queryString = 'SELECT shows.id AS id, shows.poster_image AS poster, shows.title as title, shows.num_of_episodes_avail AS numOfEpisodesAvail, shows.total_num_of_episodes AS totalEpisodes, shows.genres AS genres, COUNT(views.show_id) AS numOfViews, COUNT(reviews.id) AS numOfReviews FROM shows JOIN views ON shows.id = views.show_id LEFT JOIN reviews ON shows.id = reviews.show_id GROUP BY(shows.id) ORDER BY numOfViews DESC';
         return $this->getShows($queryString, $limit);
     }
 
     public function getShowsByGenre($genre, $limit = null)
     {
-        $queryString = "SELECT shows.id AS id, shows.poster_image AS poster, shows.thumbnail_image AS thumbnail, shows.title as title, shows.num_of_episodes_avail AS numOfEpisodesAvail, shows.total_num_of_episodes AS totalEpisodes, shows.genres AS genres, COUNT(views.show_id) AS numOfViews FROM shows LEFT JOIN views ON shows.id = views.show_id WHERE shows.genres LIKE '%" . $genre . "%' GROUP BY shows.id ORDER BY shows.id DESC";
+        $queryString = "SELECT shows.id AS id, shows.poster_image AS poster, shows.thumbnail_image AS thumbnail, shows.title as title, shows.num_of_episodes_avail AS numOfEpisodesAvail, shows.total_num_of_episodes AS totalEpisodes, shows.genres AS genres, COUNT(views.show_id) AS numOfViews, COUNT(reviews.id) AS numOfReviews FROM shows LEFT JOIN views ON shows.id = views.show_id LEFT JOIN reviews ON shows.id = reviews.show_id WHERE shows.genres LIKE '%" . $genre . "%' GROUP BY shows.id ORDER BY shows.created_at DESC";
         return $this->getShows($queryString, $limit);
     }
 
     public function getRecentlyAddedShows($limit = null)
     {
-        $queryString = 'SELECT shows.id AS id, shows.poster_image AS poster, shows.title as title, shows.num_of_episodes_avail AS numOfEpisodesAvail, shows.total_num_of_episodes AS totalEpisodes, shows.genres AS genres, COUNT(views.show_id) AS numOfViews FROM shows LEFT JOIN views ON shows.id = views.show_id GROUP BY(shows.id) ORDER BY shows.created_at DESC';
+        $queryString = 'SELECT shows.id AS id, shows.poster_image AS poster, shows.title as title, shows.num_of_episodes_avail AS numOfEpisodesAvail, shows.total_num_of_episodes AS totalEpisodes, shows.genres AS genres, COUNT(views.show_id) AS numOfViews, COUNT(reviews.id) AS numOfReviews FROM shows LEFT JOIN views ON shows.id = views.show_id LEFT JOIN reviews ON shows.id = reviews.show_id GROUP BY(shows.id) ORDER BY shows.created_at DESC';
         return $this->getShows($queryString, $limit);
     }
 
     public function getShowById($id)
     {
-        $queryString = 'SELECT shows.id AS id, shows.poster_image AS poster, shows.title AS title, shows.description AS description, shows.genres AS genres, shows.type AS type, shows.studios AS studios, shows.date_aired AS dateAired, shows.status AS status, shows.duration as duration, shows.quality AS quality, COUNT(views.show_id) AS numOfViews, episodes.id AS epId FROM shows LEFT JOIN views ON shows.id = views.show_id LEFT JOIN episodes ON shows.id = episodes.show_id WHERE shows.id = :id GROUP BY shows.id';
+        $queryString = 'SELECT shows.id AS id, shows.poster_image AS poster, shows.title AS title, shows.description AS description, shows.genres AS genres, shows.type AS type, shows.studios AS studios, shows.date_aired AS dateAired, shows.status AS status, shows.duration as duration, shows.quality AS quality, COUNT(views.show_id) AS numOfViews, episodes.id AS epId, COUNT(reviews.id) AS numOfReviews FROM shows LEFT JOIN views ON shows.id = views.show_id LEFT JOIN episodes ON shows.id = episodes.show_id LEFT JOIN reviews ON shows.id = reviews.show_id WHERE shows.id = :id GROUP BY shows.id';
 
         $select = $this->connection->prepare($queryString);
         try {
             $select->execute([
                 ':id' => $id
             ]);
-            return $select->fetchAll(\PDO::FETCH_ASSOC);
+            return $select->fetch(\PDO::FETCH_ASSOC);
         } catch (\Exception $e) {
             echo ShowsModel::ERROR_MESSAGE;
         }
@@ -91,8 +93,8 @@ class ShowsModel
 
         try {
             $insert->execute([
-                ':showId' => $showId,
-                ':userId' => $userId,
+                ShowsModel::BIND_SHOW_ID => $showId,
+                ShowsModel::BIND_USER_ID => $userId,
             ]);
         } catch (\PDOException $e) {
             echo ShowsModel::ERROR_MESSAGE;
@@ -105,11 +107,11 @@ class ShowsModel
 
         try {
             $select->execute([
-                ':showId' => $showId,
-                ':userId' => $userId,
+                ShowsModel::BIND_SHOW_ID => $showId,
+                ShowsModel::BIND_USER_ID => $userId,
             ]);
 
-            return $select->fetchAll(\PDO::FETCH_ASSOC);
+            return $select->fetch(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
             echo ShowsModel::ERROR_MESSAGE;
         }
@@ -117,13 +119,13 @@ class ShowsModel
 
     public function getFollowings($userId)
     {
-        $queryString = 'SELECT shows.id AS id, shows.title AS title, shows.genres AS genres, shows.poster_image AS poster, shows.type AS type, shows.num_of_episodes_avail AS numOfEpisodesAvail, shows.total_num_of_episodes AS totalEpisodes FROM shows JOIN followings ON shows.id = followings.show_id WHERE followings.user_id = :userId';
+        $queryString = 'SELECT shows.id AS id, shows.title AS title, shows.genres AS genres, shows.poster_image AS poster, shows.type AS type, shows.num_of_episodes_avail AS numOfEpisodesAvail, shows.total_num_of_episodes AS totalEpisodes FROM shows JOIN followings ON shows.id = followings.show_id WHERE followings.user_id = :userId ORDER BY followings.created_at DESC';
 
         $select = $this->connection->prepare($queryString);
 
         try {
             $select->execute([
-                ':userId' => $userId,
+                ShowsModel::BIND_USER_ID => $userId,
             ]);
 
             return $select->fetchAll(\PDO::FETCH_ASSOC);
@@ -138,11 +140,11 @@ class ShowsModel
 
         try {
             $select->execute([
-                ':showId' => $showId,
-                ':userId' => $userId,
+                ShowsModel::BIND_SHOW_ID => $showId,
+                ShowsModel::BIND_USER_ID => $userId,
             ]);
 
-            return $select->fetchAll(\PDO::FETCH_ASSOC);
+            return $select->fetch(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
             echo ShowsModel::ERROR_MESSAGE;
         }
@@ -154,8 +156,8 @@ class ShowsModel
 
         try {
             $insert->execute([
-                ':showId' => $showId,
-                ':userId' => $userId,
+                ShowsModel::BIND_SHOW_ID => $showId,
+                ShowsModel::BIND_USER_ID => $userId,
             ]);
         } catch (\PDOException $e) {
             echo ShowsModel::ERROR_MESSAGE;

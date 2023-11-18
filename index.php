@@ -24,32 +24,41 @@ $parsed_url = parse_url($request_uri);
 $path = $parsed_url['path'];
 
 session_start();
-$serverTimeZone = date_default_timezone_get();
-date_default_timezone_set($serverTimeZone);
 Database::getInstance()->getConnection();
+
+function isAuthenticated()
+{
+    if (isset($_SESSION['id'])) {
+        header('Location: /');
+    }
+}
+
+function isAdminAuthenticated()
+{
+    global $path;
+    if (!isset($_SESSION['adminId'])) {
+        header('Location: /admin/signin');
+    } elseif ($path === '/admin/signin') {
+        header('Location: /admin');
+    }
+}
 
 switch ($path) {
     case '/':
         $homeController = new HomeController();
-        $homeController->index('Adventure', 'comedy');
+        $homeController->index('Adventure', 'comedy'); # Popular, ForYou
         break;
     case '/genres':
         $genresController = new GenresController();
         $genresController->index();
         break;
     case '/auth/signup':
-        if (isset($_SESSION['id'])) {
-            header('Location: /');
-        } else {
-            AuthController::getInstance()->signUp();
-        }
+        isAuthenticated();
+        AuthController::getInstance()->signUp();
         break;
     case '/auth/signin':
-        if (isset($_SESSION['id'])) {
-            header('Location: /');
-        } else {
-            AuthController::getInstance()->signIn();
-        }
+        isAuthenticated();
+        AuthController::getInstance()->signIn();
         break;
     case '/auth/signout':
         AuthController::getInstance()->signOut();
@@ -71,99 +80,60 @@ switch ($path) {
         $searchController->index();
         break;
     case '/admin':
-        if (!isset($_SESSION['adminId'])) {
-            header('Location: /admin/signin');
-        } else {
-            AdminController::getInstance()->index();
-        }
+        isAdminAuthenticated();
+        AdminController::getInstance()->index();
         break;
     case '/admin/signin':
-        if (isset($_SESSION['adminId'])) {
-            header('Location: /admin');
-        } else {
-            AdminController::getInstance()->signIn();
-        }
+        isAdminAuthenticated();
+        AdminController::getInstance()->signIn();
         break;
     case '/admin/signout':
         AdminController::getInstance()->signOut();
         break;
     case '/admin/list':
-        if (!isset($_SESSION['adminId'])) {
-            header('Location: /admin/signin');
-        } else {
-            AdminController::getInstance()->adminList();
-        }
+        isAdminAuthenticated();
+        AdminController::getInstance()->adminList();
         break;
     case '/admin/create-admin':
-        if (!isset($_SESSION['adminId'])) {
-            header('Location: /admin/signin');
-        } else {
-            AdminController::getInstance()->createAdmin();
-        }
+        isAdminAuthenticated();
+        AdminController::getInstance()->createAdmin();
         break;
     case '/admin/shows':
-        if (!isset($_SESSION['adminId'])) {
-            header('Location: /admin/signin');
-        } else {
-            AdminController::getInstance()->showsList();
-        }
+        isAdminAuthenticated();
+        AdminController::getInstance()->showsList();
         break;
     case '/admin/create-show':
-        if (!isset($_SESSION['adminId'])) {
-            header('Location: /admin/signin');
-        } else {
-            AdminController::getInstance()->createShow();
-        }
+        isAdminAuthenticated();
+        AdminController::getInstance()->createShow();
         break;
     case '/admin/delete/show':
-        if (!isset($_SESSION['adminId'])) {
-            header('Location: /admin/signin');
-        } else {
-            AdminController::getInstance()->deleteShow();
-        }
+        isAdminAuthenticated();
+        AdminController::getInstance()->deleteShow();
         break;
     case '/admin/genres':
-        if (!isset($_SESSION['adminId'])) {
-            header('Location: /admin/signin');
-        } else {
-            AdminController::getInstance()->genresList();
-        }
+        isAdminAuthenticated();
+        AdminController::getInstance()->genresList();
         break;
     case '/admin/create-genre':
-        if (!isset($_SESSION['adminId'])) {
-            header('Location: /admin/signin');
-        } else {
-            AdminController::getInstance()->createGenre();
-        }
+        isAdminAuthenticated();
+        AdminController::getInstance()->createGenre();
         break;
     case '/admin/delete/genre':
-        if (!isset($_SESSION['adminId'])) {
-            header('Location: /admin/signin');
-        } else {
-            AdminController::getInstance()->deleteGenre();
-        }
+        isAdminAuthenticated();
+        AdminController::getInstance()->deleteGenre();
         break;
     case '/admin/episodes':
-        if (!isset($_SESSION['adminId'])) {
-            header('Location: /admin/signin');
-        } else {
-            AdminController::getInstance()->episodesList();
-        }
+        isAdminAuthenticated();
+        AdminController::getInstance()->episodesList();
         break;
     case '/admin/create-episode':
-        if (!isset($_SESSION['adminId'])) {
-            header('Location: /admin/signin');
-        } else {
-            AdminController::getInstance()->createEpisode();
-        }
+        isAdminAuthenticated();
+        AdminController::getInstance()->createEpisode();
         break;
     case '/admin/delete/episode':
-        if (!isset($_SESSION['adminId'])) {
-            header('Location: /admin/signin');
-        } else {
-            AdminController::getInstance()->deleteEpisode();
-        }
+        isAdminAuthenticated();
+        AdminController::getInstance()->deleteEpisode();
         break;
     default:
-        include_once './views/client/404.view.php';
+        include_once './views/404.view.php';
 }

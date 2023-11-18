@@ -13,7 +13,7 @@ class AdminController
     const SHOWS_DIR = 'assets/showsEpisodes/';
     const THUMBNAIL_DIR = 'assets/showsImages/thumbnails/';
     const POSTER_DIR = 'assets/showsImages/posters/';
-    const REDIRECT = 'Location: /admin';
+    const REDIRECT_ADMIN = 'Location: /admin';
     const REDIRECT_SHOWS = 'Location: /admin/shows';
     const REDIRECT_GENRES = 'Location: /admin/genres';
     const REDIRECT_EPISODES = 'Location: /admin/episodes';
@@ -60,7 +60,7 @@ class AdminController
                     $_SESSION['adminId'] = $user['id'];
                     $_SESSION['adminname'] = $user['adminname'];
                     $_SESSION['adminEmail'] = $user['email'];
-                    header(AdminController::REDIRECT);
+                    header(AdminController::REDIRECT_ADMIN);
                 }
             }
         }
@@ -73,7 +73,7 @@ class AdminController
         unset($_SESSION['adminId']);
         unset($_SESSION['adminname']);
         unset($_SESSION['adminEmail']);
-        header(AdminController::REDIRECT);
+        header(AdminController::REDIRECT_ADMIN);
     }
 
     public function adminList()
@@ -108,6 +108,13 @@ class AdminController
         include_once './views/admin/shows.view.php';
     }
 
+    private function makeDirectory($dir)
+    {
+        if (!is_dir($dir)) {
+            mkdir($dir, 0755, true);
+        }
+    }
+
     public function createShow()
     {
         if (isset($_POST['createShow'])) {
@@ -130,13 +137,8 @@ class AdminController
             if (empty($title) || empty($description) || empty($showType) || empty($studios) || empty($dateAired) || empty($status) || empty($genresArray) || empty($duration) || empty($thumbnail) || empty($thumbnail) || empty($quality) || !is_numeric($numOfAvailEpisodes) || $numOfAvailEpisodes < 0 || !is_numeric($numOfTotalEpisodes) || $numOfTotalEpisodes < 0) {
                 echo "<script>alert('Validation Failed. All fields are required.')</script>";
             } else {
-                if (!is_dir(AdminController::THUMBNAIL_DIR)) {
-                    mkdir(AdminController::THUMBNAIL_DIR, 0755, true);
-                }
-
-                if (!is_dir(AdminController::POSTER_DIR)) {
-                    mkdir(AdminController::POSTER_DIR, 0755, true);
-                }
+                $this->makeDirectory(AdminController::THUMBNAIL_DIR);
+                $this->makeDirectory(AdminController::POSTER_DIR);
 
                 $transformedTitle = str_replace(' ', '_', $title);
                 $thumbnailDir = AdminController::THUMBNAIL_DIR . $transformedTitle . '_' . basename($thumbnail);
@@ -254,13 +256,8 @@ class AdminController
                 $thumbnailDir = AdminController::SHOWS_DIR . $transformedTitle . '/thumbnails/';
                 $videoDir = AdminController::SHOWS_DIR . $transformedTitle . '/episodes/';
 
-                if (!is_dir($thumbnailDir)) {
-                    mkdir($thumbnailDir, 0755, true);
-                }
-
-                if (!is_dir($videoDir)) {
-                    mkdir($videoDir, 0755, true);
-                }
+                $this->makeDirectory($thumbnailDir);
+                $this->makeDirectory($videoDir);
 
                 if (move_uploaded_file($_FILES['thumbnail']['tmp_name'], $thumbnailDir . basename($thumbnail)) && move_uploaded_file($_FILES['video']['tmp_name'], $videoDir . basename($video))) {
                     $this->adminModel->insertEpisode($showId, '/' . $videoDir . basename($video), '/' . $thumbnailDir . basename($thumbnail), $title);

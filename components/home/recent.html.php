@@ -20,7 +20,7 @@
                             <?= $show['numOfEpisodesAvail'] ?> /
                             <?= $show['totalEpisodes'] ?>
                         </div>
-                        <div class="comment"><i class="fa fa-comments"></i>0</div>
+                        <div class="comment"><i class="fa fa-comments"></i><?= $show['numOfReviews'] ?></div>
                         <div class="view"><i class="fa fa-eye"></i>
                             <?= $show['numOfViews'] ?>
                         </div>
