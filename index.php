@@ -35,11 +35,8 @@ function isAuthenticated()
 
 function isAdminAuthenticated()
 {
-    global $path;
     if (!isset($_SESSION['adminId'])) {
         header('Location: /admin/signin');
-    } elseif ($path === '/admin/signin') {
-        header('Location: /admin');
     }
 }
 
@@ -84,7 +81,9 @@ switch ($path) {
         AdminController::getInstance()->index();
         break;
     case '/admin/signin':
-        isAdminAuthenticated();
+        if (isset($_SESSION['adminId'])) {
+            header('Location: /admin');
+        }
         AdminController::getInstance()->signIn();
         break;
     case '/admin/signout':
