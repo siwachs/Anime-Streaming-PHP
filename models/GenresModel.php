@@ -47,7 +47,7 @@ class GenresModel
 
     public function getAllGenres($limit = null)
     {
-        $queryString = 'SELECT genres.name FROM genres';
+        $queryString = 'SELECT genres.id, genres.name FROM genres';
         return $this->getGenres($queryString, $limit);
     }
 }

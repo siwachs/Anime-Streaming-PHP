@@ -103,6 +103,9 @@ include_once './components/admin/head.html.php';
             </div>
         </div>
     </div>
+
+    <?php
+    include_once './components/admin/scripts.php'; ?>
 </body>
 
 </html>

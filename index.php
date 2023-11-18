@@ -122,6 +122,27 @@ switch ($path) {
             AdminController::getInstance()->deleteShow();
         }
         break;
+    case '/admin/genres':
+        if (!isset($_SESSION['adminId'])) {
+            header('Location: /admin/signin');
+        } else {
+            AdminController::getInstance()->genresList();
+        }
+        break;
+    case '/admin/create-genre':
+        if (!isset($_SESSION['adminId'])) {
+            header('Location: /admin/signin');
+        } else {
+            AdminController::getInstance()->createGenre();
+        }
+        break;
+    case '/admin/delete/genre':
+        if (!isset($_SESSION['adminId'])) {
+            header('Location: /admin/signin');
+        } else {
+            AdminController::getInstance()->deleteGenre();
+        }
+        break;
     default:
         include_once './views/client/404.view.php';
 }

@@ -14,6 +14,7 @@ class AdminController
     const POSTER_DIR = 'assets/showsImages/posters/';
     const REDIRECT = 'Location: /admin';
     const REDIRECT_SHOWS = 'Location: /admin/shows';
+    const REDIRECT_GENRES = 'Location: /admin/genres';
 
     private static $instance;
     private $adminModel;
@@ -174,6 +175,39 @@ class AdminController
             }
         } else {
             header(AdminController::REDIRECT_SHOWS);
+        }
+    }
+
+    public function genresList()
+    {
+        $genres = $this->genresModel->getAllGenres();
+
+        include_once './views/admin/genres.view.php';
+    }
+
+    public function createGenre()
+    {
+        if (isset($_POST['createGenre'])) {
+            $name = trim($_POST['name'] ?? '');
+
+            if (empty($name)) {
+                echo "<script>alert('Validation Failed. Name field are required.')</script>";
+            } else {
+                $this->adminModel->createGenre($name);
+                header(AdminController::REDIRECT_GENRES);
+            }
+        }
+
+        include_once './views/admin/create_genre.view.php';
+    }
+
+    public function deleteGenre()
+    {
+        if (isset($_GET['id'])) {
+            $this->adminModel->deleteGenre($_GET['id']);
+            header(AdminController::REDIRECT_GENRES);
+        } else {
+            header(AdminController::REDIRECT_GENRES);
         }
     }
 }

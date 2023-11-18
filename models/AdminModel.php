@@ -152,4 +152,30 @@ class AdminModel
             echo "There is a error in deleting a show.";
         }
     }
+
+    public function createGenre($genre)
+    {
+        $insert = $this->connection->prepare("INSERT INTO genres (name) VALUES (:name)");
+
+        try {
+            $insert->execute([
+                ':name' => $genre
+            ]);
+        } catch (\PDOException $e) {
+            echo "There is a error in create genre.";
+        }
+    }
+
+    public function deleteGenre($genreId)
+    {
+        $delete = $this->connection->prepare('DELETE FROM genres WHERE id= :id');
+
+        try {
+            $delete->execute([
+                ':id' => $genreId
+            ]);
+        } catch (\PDOException $e) {
+            echo "There is a error in deleting a genre.";
+        }
+    }
 }
