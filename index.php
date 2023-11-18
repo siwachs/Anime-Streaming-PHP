@@ -143,6 +143,27 @@ switch ($path) {
             AdminController::getInstance()->deleteGenre();
         }
         break;
+    case '/admin/episodes':
+        if (!isset($_SESSION['adminId'])) {
+            header('Location: /admin/signin');
+        } else {
+            AdminController::getInstance()->episodesList();
+        }
+        break;
+    case '/admin/create-episode':
+        if (!isset($_SESSION['adminId'])) {
+            header('Location: /admin/signin');
+        } else {
+            AdminController::getInstance()->createEpisode();
+        }
+        break;
+    case '/admin/delete/episode':
+        if (!isset($_SESSION['adminId'])) {
+            header('Location: /admin/signin');
+        } else {
+            AdminController::getInstance()->deleteEpisode();
+        }
+        break;
     default:
         include_once './views/client/404.view.php';
 }

@@ -22,12 +22,12 @@ include_once './components/admin/head.html.php';
 
                                 <div class="form-outline mb-4 mt-4">
                                     <label for="thumbnail" class="form-label">Thumbnail</label>
-                                    <input type="file" name="thumbnail" id="thumbnail" class="form-control" />
+                                    <input type="file" name="thumbnail" id="thumbnail" class="form-control" accept="image/*" />
                                 </div>
 
                                 <div class="form-outline mb-4 mt-4">
                                     <label for="poster" class="form-label">Poster</label>
-                                    <input type="file" name="poster" id="poster" class="form-control" />
+                                    <input type="file" name="poster" id="poster" class="form-control" accept="image/*" />
                                 </div>
 
                                 <div class="form-group">

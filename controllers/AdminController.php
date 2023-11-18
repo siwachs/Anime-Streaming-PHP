@@ -10,11 +10,13 @@ use models\GenresModel;
 
 class AdminController
 {
+    const SHOWS_DIR = 'assets/showsEpisodes/';
     const THUMBNAIL_DIR = 'assets/showsImages/thumbnails/';
     const POSTER_DIR = 'assets/showsImages/posters/';
     const REDIRECT = 'Location: /admin';
     const REDIRECT_SHOWS = 'Location: /admin/shows';
     const REDIRECT_GENRES = 'Location: /admin/genres';
+    const REDIRECT_EPISODES = 'Location: /admin/episodes';
 
     private static $instance;
     private $adminModel;
@@ -128,8 +130,17 @@ class AdminController
             if (empty($title) || empty($description) || empty($showType) || empty($studios) || empty($dateAired) || empty($status) || empty($genresArray) || empty($duration) || empty($thumbnail) || empty($thumbnail) || empty($quality) || !is_numeric($numOfAvailEpisodes) || $numOfAvailEpisodes < 0 || !is_numeric($numOfTotalEpisodes) || $numOfTotalEpisodes < 0) {
                 echo "<script>alert('Validation Failed. All fields are required.')</script>";
             } else {
-                $thumbnailDir = AdminController::THUMBNAIL_DIR . str_replace(' ', '_', $title) . '_' . basename($thumbnail);
-                $posterDir = AdminController::POSTER_DIR . str_replace(' ', '_', $title) . '_' . basename($poster);
+                if (!is_dir(AdminController::THUMBNAIL_DIR)) {
+                    mkdir(AdminController::THUMBNAIL_DIR, 0755, true);
+                }
+
+                if (!is_dir(AdminController::POSTER_DIR)) {
+                    mkdir(AdminController::POSTER_DIR, 0755, true);
+                }
+
+                $transformedTitle = str_replace(' ', '_', $title);
+                $thumbnailDir = AdminController::THUMBNAIL_DIR . $transformedTitle . '_' . basename($thumbnail);
+                $posterDir = AdminController::POSTER_DIR . $transformedTitle . '_' . basename($poster);
 
                 $showData = [
                     'title' => $title,
@@ -208,6 +219,77 @@ class AdminController
             header(AdminController::REDIRECT_GENRES);
         } else {
             header(AdminController::REDIRECT_GENRES);
+        }
+    }
+
+    public function episodesList()
+    {
+        $episodes = $this->adminModel->getEpisodes();
+
+        include_once './views/admin/episodes.view.php';
+    }
+
+    public function createEpisode()
+    {
+        if (isset($_POST['createEpisode'])) {
+            $title = trim($_POST['title'] ?? '');
+            $show = trim($_POST['show'] ?? '');
+
+            // Processing uploaded files
+            $thumbnail = $_FILES['thumbnail']['name'] ?? '';
+            $video = $_FILES['video']['name'] ?? '';
+
+            if (empty($title) || empty($show) || empty($thumbnail) || empty($video)) {
+                echo "<script>alert('Validation Failed. All fields are required.')</script>";
+            } else {
+                $parsedShow = json_decode($show, true);
+                $showId = $parsedShow["id"];
+                $showTitle = $parsedShow["title"];
+
+                if (!is_dir(AdminController::SHOWS_DIR)) {
+                    mkdir(AdminController::SHOWS_DIR);
+                }
+
+                $transformedTitle = str_replace(" ", "_", $showTitle);
+                $thumbnailDir = AdminController::SHOWS_DIR . $transformedTitle . '/thumbnails/';
+                $videoDir = AdminController::SHOWS_DIR . $transformedTitle . '/episodes/';
+
+                if (!is_dir($thumbnailDir)) {
+                    mkdir($thumbnailDir, 0755, true);
+                }
+
+                if (!is_dir($videoDir)) {
+                    mkdir($videoDir, 0755, true);
+                }
+
+                if (move_uploaded_file($_FILES['thumbnail']['tmp_name'], $thumbnailDir . basename($thumbnail)) && move_uploaded_file($_FILES['video']['tmp_name'], $videoDir . basename($video))) {
+                    $this->adminModel->insertEpisode($showId, '/' . $videoDir . basename($video), '/' . $thumbnailDir . basename($thumbnail), $title);
+                    header(AdminController::REDIRECT_EPISODES);
+                }
+            }
+        }
+
+        $shows = $this->adminModel->getShowsForEpisodes();
+
+        include_once './views/admin/create_episode.view.php';
+    }
+
+    public function deleteEpisode()
+    {
+        if (isset($_GET['id'])) {
+            $episodeLinks = $this->adminModel->getEpisodeLink($_GET['id']);
+
+            if (empty($episodeLinks)) {
+                header(AdminController::REDIRECT_EPISODES);
+            } else {
+                unlink(substr($episodeLinks['video'], 1));
+                unlink(substr($episodeLinks['thumbnail'], 1));
+
+                $this->adminModel->deleteEpisode($_GET['id']);
+                header(AdminController::REDIRECT_EPISODES);
+            }
+        } else {
+            header(AdminController::REDIRECT_EPISODES);
         }
     }
 }

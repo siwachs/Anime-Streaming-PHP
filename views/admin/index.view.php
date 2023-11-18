@@ -13,7 +13,7 @@ include_once './components/admin/head.html.php';
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Shows</h5>
-              <p class="card-text">number of shows: <?= $stats['showsCount'] ?></p>
+              <p class="card-text">Number of shows: <?= $stats['showsCount'] ?></p>
             </div>
           </div>
         </div>
@@ -22,7 +22,7 @@ include_once './components/admin/head.html.php';
             <div class="card-body">
               <h5 class="card-title">Episodes</h5>
 
-              <p class="card-text">number of episodes: <?= $stats['episodesCount'] ?></p>
+              <p class="card-text">Number of episodes: <?= $stats['episodesCount'] ?></p>
             </div>
           </div>
         </div>
@@ -31,7 +31,7 @@ include_once './components/admin/head.html.php';
             <div class="card-body">
               <h5 class="card-title">Genres</h5>
 
-              <p class="card-text">number of genres: <?= $stats['genresCount'] ?></p>
+              <p class="card-text">Number of genres: <?= $stats['genresCount'] ?></p>
             </div>
           </div>
         </div>
@@ -40,7 +40,7 @@ include_once './components/admin/head.html.php';
             <div class="card-body">
               <h5 class="card-title">Admins</h5>
 
-              <p class="card-text">number of admins: <?= $stats['adminCount'] ?></p>
+              <p class="card-text">Number of admins: <?= $stats['adminCount'] ?></p>
             </div>
           </div>
         </div>

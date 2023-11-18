@@ -178,4 +178,71 @@ class AdminModel
             echo "There is a error in deleting a genre.";
         }
     }
+
+    public function getEpisodes()
+    {
+        $select = $this->connection->prepare('SELECT episodes.id AS id, episodes.video AS video, episodes.video_thumbnail AS thumbnail, episodes.title AS title from episodes');
+
+        try {
+            $select->execute();
+            return $select->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo "There is a error in get episodes.";
+        }
+    }
+
+    public function getShowsForEpisodes()
+    {
+        $select = $this->connection->prepare('SELECT shows.id AS id, shows.title AS title FROM shows ORDER BY created_at DESC');
+
+        try {
+            $select->execute();
+            return $select->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo "There is a error in get shows for episodes.";
+        }
+    }
+
+    public function insertEpisode($showId, $video, $videoThumbnail, $title)
+    {
+        $insert = $this->connection->prepare('INSERT INTO episodes (show_id, video, video_thumbnail, title ) VALUES (:showId, :video, :videoThumbnail, :title)');
+
+        try {
+            $insert->execute([
+                ':showId' => $showId,
+                ':video' => $video,
+                ':videoThumbnail' => $videoThumbnail,
+                ':title' => $title
+            ]);
+        } catch (\PDOException $e) {
+            echo "There is a error in insert episode.";
+        }
+    }
+
+    public function getEpisodeLink($epId)
+    {
+        $select = $this->connection->prepare('SELECT episodes.video AS video, episodes.video_thumbnail AS thumbnail FROM episodes WHERE id= :id');
+
+        try {
+            $select->execute([
+                ':id' => $epId
+            ]);
+            return $select->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo "There is a error in get episode.";
+        }
+    }
+
+    public function deleteEpisode($episodeId)
+    {
+        $delete = $this->connection->prepare('DELETE FROM episodes WHERE id= :id');
+
+        try {
+            $delete->execute([
+                ':id' => $episodeId
+            ]);
+        } catch (\PDOException $e) {
+            echo "There is a error in deleting a episode.";
+        }
+    }
 }

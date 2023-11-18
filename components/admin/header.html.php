@@ -27,7 +27,7 @@
                         <a class="nav-link" href="/admin/genres" style="margin-left: 20px">Genres</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="episodes-admins/show-episodes.html" style="margin-left: 20px">Episodes</a>
+                        <a class="nav-link" href="/admin/episodes" style="margin-left: 20px">Episodes</a>
                     </li>
                 <?php endif; ?>
 
